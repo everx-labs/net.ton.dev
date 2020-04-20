@@ -33,6 +33,7 @@ if [ "${INSTALL_DEPENDENCIES}" = "yes" ]; then
         libreadline-dev \
         libssl-dev \
         libz-dev \
+        ninja-build \
         pkg-config \
         zlib1g-dev
     echo "INFO: install dependencies... DONE"
@@ -52,12 +53,14 @@ echo "INFO: build a node..."
 mkdir -p "${TON_BUILD_DIR}"
 cd "${TON_BUILD_DIR}"
 #cmake -DCMAKE_BUILD_TYPE=Release ..
-cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo ..
-cmake --build .
+#cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo ..
+#cmake --build .
+cmake .. -G "Ninja" -DCMAKE_BUILD_TYPE=RelWithDebInfo -DPORTABLE=ON -DTON_ARCH=corei7-avx
+ninja
 echo "INFO: build a node... DONE"
 
 echo "INFO: build utils (convert_address)..."
-cd "${TON_GITHUB_REPO}/utils/convert_address"
+cd "${NET_TON_DEV_SRC_TOP_DIR}/utils/convert_address"
 cargo build --release
-cp "${TON_GITHUB_REPO}/utils/convert_address/target/release/convert_address" "${TON_BUILD_DIR}/utils/"
+cp "${NET_TON_DEV_SRC_TOP_DIR}/utils/convert_address/target/release/convert_address" "${TON_BUILD_DIR}/utils/"
 echo "INFO: build utils (convert_address)... DONE"
