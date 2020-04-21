@@ -71,7 +71,7 @@ if [ "$election_id" == "0" ]; then
             printf " compute_returned_stake 0x" addr "\" ";
             print  " -rc \"quit\" &> " KEYS_DIR "/recover-state"
         }
-    }' "${KEYS_DIR}/$1-dump" "${KEYS_DIR}/elector-addr" >"${KEYS_DIR}/recover-run"
+    }' "${KEYS_DIR}/${HOSTNAME}-dump" "${KEYS_DIR}/elector-addr" >"${KEYS_DIR}/recover-run"
 
     bash "${KEYS_DIR}/recover-run"
 
