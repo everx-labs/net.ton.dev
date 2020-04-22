@@ -14,6 +14,12 @@
 # See the License for the specific TON DEV software governing permissions and limitations
 # under the License.
 
+#DEBUG="yes"
+
+if [ "$DEBUG" = "yes" ]; then
+    set -x
+fi
+
 SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)
 # shellcheck source=env.sh
 . "${SCRIPT_DIR}/env.sh"
@@ -40,6 +46,11 @@ awk -v KEYS_DIR="${KEYS_DIR}" -v TON_BUILD_DIR="${TON_BUILD_DIR}" '{
         print  KEYS_DIR "/elector-addr-base64"
     }
 }' "${KEYS_DIR}/elector-addr" >"${KEYS_DIR}/elector-run"
+
+if [ "$DEBUG" = "yes" ]; then
+    echo "${KEYS_DIR}/elector-run:"
+    cat "${KEYS_DIR}/elector-run"
+fi
 
 bash "${KEYS_DIR}/elector-run"
 
@@ -72,6 +83,11 @@ if [ "$election_id" == "0" ]; then
             print  " -rc \"quit\" &> " KEYS_DIR "/recover-state"
         }
     }' "${KEYS_DIR}/${HOSTNAME}-dump" "${KEYS_DIR}/elector-addr" >"${KEYS_DIR}/recover-run"
+
+    if [ "$DEBUG" = "yes" ]; then
+        echo "${KEYS_DIR}/recover-run:"
+        cat "${KEYS_DIR}/recover-run"
+    fi
 
     bash "${KEYS_DIR}/recover-run"
 
@@ -114,8 +130,13 @@ if [ "$election_id" == "0" ]; then
             }
         }' "${KEYS_DIR}/elector-addr-base64" "${KEYS_DIR}/recover-state" >"${KEYS_DIR}/recover-run2"
 
+        if [ "$DEBUG" = "yes" ]; then
+            echo "${KEYS_DIR}/recover-run2:"
+            cat "${KEYS_DIR}/recover-run2"
+        fi
+
         bash "${KEYS_DIR}/recover-run2"
-        date +"%F %T Recover of $recover_amount GR requested"
+        date +"INFO: %F %T Recover of $recover_amount RB requested"
     fi
 
     exit
@@ -128,6 +149,11 @@ awk -v KEYS_DIR="${KEYS_DIR}" -v TON_BUILD_DIR="${TON_BUILD_DIR}" '{
         print  "-rc \"getaccount " $6 "\" -rc \"quit\" &> " KEYS_DIR "/wallet-state"
     }
 }' "${KEYS_DIR}/${HOSTNAME}-dump" >"${KEYS_DIR}/wallet-state-run"
+
+if [ "$DEBUG" = "yes" ]; then
+    echo "${KEYS_DIR}/wallet-state-run:"
+    cat "${KEYS_DIR}/wallet-state-run"
+fi
 
 bash "${KEYS_DIR}/wallet-state-run"
 
@@ -143,12 +169,14 @@ has_grams=$(awk -v validator="$HOSTNAME" '{
 }' "${KEYS_DIR}/wallet-state")
 
 if [ "$has_grams" = "" ]; then
+    echo "INFO: \$has_grams is empty"
     exit
 fi
 
-echo "$has_grams"
+echo "INFO: has_grams = ${has_grams}"
 
 if [ -f "${KEYS_DIR}/stop-election" ]; then
+    echo "WARNING: manual stop of participation in elections with ${KEYS_DIR}/stop-election file"
     exit
 fi
 
@@ -160,7 +188,7 @@ if [ -f "${KEYS_DIR}/active-election-id" ]; then
 fi
 
 cp "${KEYS_DIR}/election-id" "${KEYS_DIR}/active-election-id"
-date +"%F %T Elections $election_id"
+date +"INFO: %F %T election_id = $election_id"
 
 "${TON_BUILD_DIR}/validator-engine-console/validator-engine-console" \
     -k "${KEYS_DIR}/client" \
@@ -192,7 +220,7 @@ awk -v validator="$HOSTNAME" -v KEYS_DIR="${KEYS_DIR}" -v TON_BUILD_DIR="${TON_B
             key_adnl = $4
         }
     } else if (substr($1, length($1)-14) == "ConfigParam(15)") {
-        time = election_start + 1000;
+        time = election_start + 600;
         split($4, t, ":");
         time = time + t[2] + 0;
         split($5, t, ":");
@@ -217,18 +245,28 @@ awk -v validator="$HOSTNAME" -v KEYS_DIR="${KEYS_DIR}" -v TON_BUILD_DIR="${TON_B
     }
 }' "${KEYS_DIR}/election-id" "${KEYS_DIR}/${HOSTNAME}-election-key" "${KEYS_DIR}/${HOSTNAME}-election-adnl-key" "${KEYS_DIR}/elector-params" >"${KEYS_DIR}/elector-run1"
 
+if [ "$DEBUG" = "yes" ]; then
+    echo "${KEYS_DIR}/elector-run1:"
+    cat "${KEYS_DIR}/elector-run1"
+fi
+
 bash "${KEYS_DIR}/elector-run1"
 
 awk -v validator="$HOSTNAME" -v KEYS_DIR="${KEYS_DIR}" -v TON_BUILD_DIR="${TON_BUILD_DIR}" '{
     if (NR == 2) {
         request = $1
     } else if (($1 == "created") && ($2 == "new") && ($3 == "key")) {
-        printf TON_BUILD_DIR + "/validator-engine-console/validator-engine-console ";
+        printf TON_BUILD_DIR "/validator-engine-console/validator-engine-console ";
         printf "-k " KEYS_DIR "/client -p " KEYS_DIR "/server.pub -a 127.0.0.1:3030 ";
         printf "-c \"exportpub " $4 "\" ";
         print  "-c \"sign " $4 " " request "\" &> " KEYS_DIR "/" validator "-request-dump1"
    }
 }' "${KEYS_DIR}/${HOSTNAME}-request-dump" "${KEYS_DIR}/${HOSTNAME}-election-key" >"${KEYS_DIR}/elector-run2"
+
+if [ "$DEBUG" = "yes" ]; then
+    echo "${KEYS_DIR}/elector-run2:"
+    cat "${KEYS_DIR}/elector-run2"
+fi
 
 bash "${KEYS_DIR}/elector-run2"
 
@@ -240,13 +278,18 @@ awk -v validator="$HOSTNAME" -v KEYS_DIR="${KEYS_DIR}" -v TON_BUILD_DIR="${TON_B
     } else if (($1 == "got") && ($2 == "signature")) {
         signature = $3
     } else if (($1 == "created") && ($2 == "new") && ($3 == "key")) {
-        printf TON_BUILD_DIR + "/crypto/fift ";
+        printf TON_BUILD_DIR "/crypto/fift ";
         printf "-I " TON_SRC_DIR "/crypto/fift/lib:" TON_SRC_DIR "/crypto/smartcont ";
         printf "-s validator-elect-signed.fif @" KEYS_DIR "/" validator ".addr " election_start " 2 " $4;
-        printf " " key " " signature " " KEYS_DIR "/validator-query.boc ";
+        printf " " key " " signature " " KEYS_DIR "/" validator "-query.boc ";
         print  "> " KEYS_DIR "/" validator "-request-dump2"
     }
 }' "${KEYS_DIR}/election-id" "${KEYS_DIR}/${HOSTNAME}-request-dump1" "${KEYS_DIR}/${HOSTNAME}-election-adnl-key" >"${KEYS_DIR}/elector-run3"
+
+if [ "$DEBUG" = "yes" ]; then
+    echo "${KEYS_DIR}/elector-run3:"
+    cat "${KEYS_DIR}/elector-run3"
+fi
 
 bash "${KEYS_DIR}/elector-run3"
 
@@ -260,7 +303,7 @@ awk -v validator="$HOSTNAME" -v KEYS_DIR="${KEYS_DIR}" -v stake="$STAKE" -v TON_
         printf TON_BUILD_DIR "/crypto/fift ";
         printf "-I " TON_SRC_DIR "/crypto/fift/lib:" TON_SRC_DIR "/crypto/smartcont ";
         printf "-s wallet.fif " KEYS_DIR "/" validator " " elector " " seqno " ";
-        printf stake ". -B " KEYS_DIR "/validator-query.boc " KEYS_DIR "/" validator "-wallet-query ";
+        printf stake ". -B " KEYS_DIR "/" validator "-query.boc " KEYS_DIR "/" validator "-wallet-query ";
         print  "> " KEYS_DIR "/" validator "-query-dump";
         printf TON_BUILD_DIR "/lite-client/lite-client ";
         printf "-p " KEYS_DIR "/liteserver.pub -a 127.0.0.1:3031 ";
@@ -268,6 +311,11 @@ awk -v validator="$HOSTNAME" -v KEYS_DIR="${KEYS_DIR}" -v stake="$STAKE" -v TON_
         print  "-rc \"quit\""
     }
 }' "${KEYS_DIR}/elector-addr-base64" "${KEYS_DIR}/wallet-state" >"${KEYS_DIR}/elector-run4"
+
+if [ "$DEBUG" = "yes" ]; then
+    echo "${KEYS_DIR}/elector-run4:"
+    cat "${KEYS_DIR}/elector-run4"
+fi
 
 bash "${KEYS_DIR}/elector-run4"
 
