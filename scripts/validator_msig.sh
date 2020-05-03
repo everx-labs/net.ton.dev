@@ -29,7 +29,13 @@ SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)
 # shellcheck source=env.sh
 . "${SCRIPT_DIR}/env.sh"
 
-STAKE="${1:-100000}"
+STAKE="$1"
+
+if [ -z "${STAKE}" ]; then
+    echo "ERROR: STAKE (in tokens) is not specified"
+    echo "Usage: $(basename "$0") <STAKE>"
+    exit 1
+fi
 
 MSIG_ADDR=$(cat "${KEYS_DIR}/${VALIDATOR_NAME}.addr")
 echo "INFO: MSIG_ADDR = ${MSIG_ADDR}"
