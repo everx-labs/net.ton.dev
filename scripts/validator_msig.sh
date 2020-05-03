@@ -17,8 +17,6 @@ set -o pipefail
 # under the License.
 #
 
-#DEBUG="yes"
-
 if [ "$DEBUG" = "yes" ]; then
     set -x
 fi
@@ -116,7 +114,7 @@ fi
 if [ -f "${ELECTIONS_WORK_DIR}/active-election-id" ]; then
     active_election_id=$(cat "${ELECTIONS_WORK_DIR}/active-election-id")
     if [ "$active_election_id" == "$election_id" ]; then
-        #        date +"%F %T Elections $election_id, already submitted"
+        date +"INFO: %F %T Elections $election_id, already submitted"
         echo "INFO: $(basename "$0") END $(date +%s) / $(date)"
         exit
     fi
