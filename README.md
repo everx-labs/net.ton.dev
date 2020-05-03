@@ -31,7 +31,6 @@ Let `N` be the total number of wallet custodians and `K` the number of minimal c
     $ ./msig_genaddr.sh
 ```
 Script creates 2 files: `$(hostname -s).addr` and `msig.keys.json` in `~/ton-keys/` folder. 
-Put them next to `validator_msig.sh` script. 
 Use public key from `msig.keys.json` as `Nth` custodian public key when you will deploy the wallet.
 
 ## Run Validator Node
@@ -75,7 +74,7 @@ Make sure that the wallet was deployed at the address saved in `$(hostname -s).a
 
 Specify `<STAKE>` argument in tokens. This amount of tokens will be sent by wallet to Elector smart contract in every validation cycle.
 
-Run the validator script with the validator name as first argument:
+Run the validator script:
 
     $ cd ./scripts/
     $ watch -n 60 ./validator_msig.sh <STAKE> >> ./validator.log 2>&1
