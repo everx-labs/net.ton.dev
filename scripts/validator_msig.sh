@@ -98,7 +98,7 @@ if [ "$election_id" == "0" ]; then
             >"${ELECTIONS_WORK_DIR}/recover_stake.transId"
 
         transactionId=$(grep transId "${ELECTIONS_WORK_DIR}/recover_stake.transId")
-        echo "INFO: transactionId = $transactionId" # send to other custodians for confirmation
+        echo "INFO: $transactionId" # send to other custodians for confirmation
         date +"INFO: %F %T Recover of $recover_amount GR requested"
     fi
 
@@ -226,7 +226,7 @@ elector_addr=$(cat "${ELECTIONS_WORK_DIR}/elector-addr-base64")
 
 # TODO: add check if tonos-cli is failed
 transactionId=$(grep transId "${ELECTIONS_WORK_DIR}/process_new_stake.transId")
-echo "INFO: transactionId = $transactionId" # send to other custodians for confirmation
+echo "INFO: $transactionId" # send to other custodians for confirmation
 
 date +"INFO: %F %T prepared for elections"
 
