@@ -64,3 +64,10 @@ cd "${NET_TON_DEV_SRC_TOP_DIR}/utils/convert_address"
 cargo build --release
 cp "${NET_TON_DEV_SRC_TOP_DIR}/utils/convert_address/target/release/convert_address" "${TON_BUILD_DIR}/utils/"
 echo "INFO: build utils (convert_address)... DONE"
+
+echo "INFO: build utils (tonos-cli)..."
+rm -rf "${TONOS_CLI_SRC_DIR}"
+git clone https://github.com/tonlabs/tonos-cli.git "${TONOS_CLI_SRC_DIR}"
+cd "${TONOS_CLI_SRC_DIR}" && cargo build --release
+cp "${TONOS_CLI_SRC_DIR}/target/release/tonos-cli" "${TON_BUILD_DIR}/utils/"
+echo "INFO: build utils (tonos-cli)... DONE"

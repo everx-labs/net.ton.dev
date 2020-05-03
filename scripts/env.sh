@@ -32,6 +32,7 @@ export TON_GITHUB_REPO="https://github.com/ton-blockchain/ton.git"
 export TON_GITHUB_BRANCH="master"
 export TON_SRC_DIR="${NET_TON_DEV_SRC_TOP_DIR}/ton"
 export TON_BUILD_DIR="${TON_SRC_DIR}/build"
+export TONOS_CLI_SRC_DIR="${NET_TON_DEV_SRC_TOP_DIR}/tonos-cli"
 
 export TON_WORK_DIR="/var/ton-work"
 export KEYS_DIR="$HOME/ton-keys"
@@ -40,3 +41,4 @@ export ADNL_PORT="30303"
 
 HOSTNAME=$(hostname -s)
 export HOSTNAME
+export VALIDATOR_NAME="$HOSTNAME"
