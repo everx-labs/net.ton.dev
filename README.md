@@ -6,7 +6,7 @@ This HOWTO contains instructions on how to build and configure a validator node 
 ## System Requirements
 | Configuration | CPU (cores) | RAM (GiB) | Storage (GiB) | Network (Gbit/s)|
 |---|:---|:---|:---|:---|
-| Minimal |2|8|1000|1|
+| Minimal |8|16|1000|1|
 | Recommended |16|32|1000|1| 
 ## Prerequisites
 ### 1. Build Node
