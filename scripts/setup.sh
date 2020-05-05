@@ -93,4 +93,11 @@ mv "${TON_WORK_DIR}/db/config.json.tmp" "${TON_WORK_DIR}/db/config.json"
 
 find "${TON_WORK_DIR}"
 
+rm -rf "${NET_TON_DEV_SRC_TOP_DIR}/ton-labs-contracts"
+git clone https://github.com/tonlabs/ton-labs-contracts.git "${NET_TON_DEV_SRC_TOP_DIR}/ton-labs-contracts"
+rm -f "${NET_TON_DEV_SRC_TOP_DIR}/configs/SafeMultisigWallet.tvc"
+rm -f "${NET_TON_DEV_SRC_TOP_DIR}/configs/SafeMultisigWallet.abi.json"
+cp "${NET_TON_DEV_SRC_TOP_DIR}/ton-labs-contracts/solidity/safemultisig/SafeMultisigWallet.tvc" "${NET_TON_DEV_SRC_TOP_DIR}/configs"
+cp "${NET_TON_DEV_SRC_TOP_DIR}/ton-labs-contracts/solidity/safemultisig/SafeMultisigWallet.abi.json" "${NET_TON_DEV_SRC_TOP_DIR}/configs"
+
 echo "INFO: setup TON node... DONE"

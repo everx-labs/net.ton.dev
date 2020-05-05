@@ -41,9 +41,10 @@ fi
 
 rm -rf "${TON_SRC_DIR}"
 
-echo "INFO: clone ${TON_GITHUB_REPO} (${TON_GITHUB_BRANCH})..."
-git clone --recursive "${TON_GITHUB_REPO}" --branch "${TON_GITHUB_BRANCH}" "${TON_SRC_DIR}"
-echo "INFO: clone ${TON_GITHUB_REPO} (${TON_GITHUB_BRANCH})... DONE"
+echo "INFO: clone ${TON_GITHUB_REPO} (${TON_STABLE_GITHUB_COMMIT_ID})..."
+git clone --recursive "${TON_GITHUB_REPO}" "${TON_SRC_DIR}"
+cd "${TON_SRC_DIR}" && git checkout "${TON_STABLE_GITHUB_COMMIT_ID}"
+echo "INFO: clone ${TON_GITHUB_REPO} (${TON_STABLE_GITHUB_COMMIT_ID})... DONE"
 
 # TODO remove after fix upstream
 cd "${TON_SRC_DIR}"

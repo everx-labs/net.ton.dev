@@ -93,7 +93,7 @@ if [ "$election_id" == "0" ]; then
 
         "${TON_BUILD_DIR}/utils/tonos-cli" call "${MSIG_ADDR}" submitTransaction \
             "{\"dest\":\"${elector_addr}\",\"value\":\"1000000000\",\"bounce\":true,\"allBalance\":false,\"payload\":\"${recover_query_boc}\"}" \
-            --abi "${NET_TON_DEV_SRC_TOP_DIR}/configs/MultisigWallet.abi.json" \
+            --abi "${NET_TON_DEV_SRC_TOP_DIR}/configs/SafeMultisigWallet.abi.json" \
             --sign "${KEYS_DIR}/msig.keys.json" \
             >"${ELECTIONS_WORK_DIR}/recover_stake.transId"
 
@@ -220,7 +220,7 @@ elector_addr=$(cat "${ELECTIONS_WORK_DIR}/elector-addr-base64")
 
 "${TON_BUILD_DIR}/utils/tonos-cli" call "${MSIG_ADDR}" submitTransaction \
     "{\"dest\":\"${elector_addr}\",\"value\":\"${NANOSTAKE}\",\"bounce\":true,\"allBalance\":false,\"payload\":\"${validator_query_boc}\"}" \
-    --abi "${NET_TON_DEV_SRC_TOP_DIR}/configs/MultisigWallet.abi.json" \
+    --abi "${NET_TON_DEV_SRC_TOP_DIR}/configs/SafeMultisigWallet.abi.json" \
     --sign "${KEYS_DIR}/msig.keys.json" \
     >"${ELECTIONS_WORK_DIR}/process_new_stake.transId"
 
