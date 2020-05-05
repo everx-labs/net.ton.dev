@@ -23,6 +23,8 @@ Initialize a node:
 
     $ ./setup.sh
 ### 4. Prepare Multisignature Wallet
+**Note**: All manual calls of the TONOS-CLI utility should be performed from the `scripts` folder.
+
 Multisignature wallet (or just wallet) is used in validator script to send election requests to the Elector smart contract.
 
 Let `N` be the total number of wallet custodians and `K` the number of minimal confirmations required to execute a wallet transaction.
@@ -67,6 +69,9 @@ INFO: TIME_DIFF = -2
 If the `TIME_DIFF` parameter equals a few seconds, synchronization is complete.
 
 ### 1. Initialize multisignature wallet
+
+**Note**: All manual calls of the TONOS-CLI utility should be performed from the `scripts` folder.
+
 
 Gather all custodians' public keys and deploy wallet using [TONOS-CLI](https://docs.ton.dev/86757ecb2/v/0/p/94921e-running-tonos-cli-with-tails-os-and-working-with-multisignature-wallet) (lookup Deploying Multisignature Wallet to TON blockchain in the document above). Use `K` value as `reqConfirms` deploy parameter.
 Make sure that the wallet was deployed at the address saved in `$(hostname -s).addr` file.
