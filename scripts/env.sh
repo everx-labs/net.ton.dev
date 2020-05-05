@@ -43,3 +43,5 @@ export ADNL_PORT="30303"
 HOSTNAME=$(hostname -s)
 export HOSTNAME
 export VALIDATOR_NAME="$HOSTNAME"
+
+export PATH="${TON_BUILD_DIR}/utils:$PATH"
