@@ -9,17 +9,22 @@ This HOWTO contains instructions on how to build and configure a validator node 
 | Minimal |8|16|1000|1|
 | Recommended |16|32|1000|1| 
 ## Prerequisites
-### 1. Build Node
+### 1. Set the Environment
 Adjust (if needed) `net.ton.dev/scripts/env.sh`
-
+    
+    $ cd net.ton.dev/scripts/
+    $ . ./env.sh 
+### 2. Build Node
 Build a node:
 
-    $ cd ./scripts/ && ./build.sh
-### 2. Setup Node
+    $ ./build.sh
+### 3. Setup Node
 Initialize a node:
 
-    $ cd ./scripts/ && ./setup.sh
-### 3. Prepare Multisignature Wallet
+    $ ./setup.sh
+### 4. Prepare Multisignature Wallet
+**Note**: All manual calls of the TONOS-CLI utility should be performed from the `scripts` folder.
+
 Multisignature wallet (or just wallet) is used in validator script to send election requests to the Elector smart contract.
 
 Let `N` be the total number of wallet custodians and `K` the number of minimal confirmations required to execute a wallet transaction.
@@ -27,7 +32,6 @@ Let `N` be the total number of wallet custodians and `K` the number of minimal c
 1. Read [TONOS-CLI documentation](https://docs.ton.dev/86757ecb2/v/0/p/94921e-running-tonos-cli-with-tails-os-and-working-with-multisignature-wallet) (*Deploying Multisignature Wallet to TON blockchain*) and generate seed phrases and public keys for `N - 1`  custodians.
 2. Generate wallet address and `Nth` custodian key:
 ```
-    $ cd ./scripts/ 
     $ ./msig_genaddr.sh
 ```
 Script creates 2 files: `$(hostname -s).addr` and `msig.keys.json` in `~/ton-keys/` folder. 
@@ -37,14 +41,14 @@ Use public key from `msig.keys.json` as `Nth` custodian public key when you will
 Do this step when the network is launched.
 Run the node:
 
-    $ cd ./scripts/ && ./run.sh
+    $ ./run.sh
   
 Wait until the node is synced with the masterchain. Depending on network throughput this step may take significant time (up to several hours).
 
 You may use the following script to check if the node is synced:
-```
-    $ cd ./scripts/ && ./check_node_sync_status.sh
-```
+
+    $ ./check_node_sync_status.sh
+
 Script output example:
 ```
 connecting to [127.0.0.1:3030]
@@ -66,6 +70,9 @@ If the `TIME_DIFF` parameter equals a few seconds, synchronization is complete.
 
 ### 1. Initialize multisignature wallet
 
+**Note**: All manual calls of the TONOS-CLI utility should be performed from the `scripts` folder.
+
+
 Gather all custodians' public keys and deploy wallet using [TONOS-CLI](https://docs.ton.dev/86757ecb2/v/0/p/94921e-running-tonos-cli-with-tails-os-and-working-with-multisignature-wallet) (lookup Deploying Multisignature Wallet to TON blockchain in the document above). Use `K` value as `reqConfirms` deploy parameter.
 Make sure that the wallet was deployed at the address saved in `$(hostname -s).addr` file.
 
@@ -76,7 +83,6 @@ Specify `<STAKE>` argument in tokens. This amount of tokens will be sent by wall
 
 Run the validator script:
 
-    $ cd ./scripts/
     $ watch -n 60 ./validator_msig.sh <STAKE> >> ./validator.log 2>&1
 
 ### How validator script works
