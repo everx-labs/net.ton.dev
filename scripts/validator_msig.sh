@@ -40,7 +40,7 @@ echo "INFO: MSIG_ADDR = ${MSIG_ADDR}"
 ELECTIONS_WORK_DIR="${KEYS_DIR}/elections"
 mkdir -p "${ELECTIONS_WORK_DIR}"
 
-NANOSTAKE=$("${TON_BUILD_DIR}/utils/tonos-cli" convert tokens "$STAKE")
+NANOSTAKE=$("${UTILS_DIR}/tonos-cli" convert tokens "$STAKE")
 
 "${TON_BUILD_DIR}/lite-client/lite-client" \
     -p "${KEYS_DIR}/liteserver.pub" \
@@ -91,9 +91,9 @@ if [ "$election_id" == "0" ]; then
 
         recover_query_boc=$(base64 --wrap=0 "${ELECTIONS_WORK_DIR}/recover-query.boc")
 
-        "${TON_BUILD_DIR}/utils/tonos-cli" call "${MSIG_ADDR}" submitTransaction \
+        "${UTILS_DIR}/tonos-cli" call "${MSIG_ADDR}" submitTransaction \
             "{\"dest\":\"${elector_addr}\",\"value\":\"1000000000\",\"bounce\":true,\"allBalance\":false,\"payload\":\"${recover_query_boc}\"}" \
-            --abi "${NET_TON_DEV_SRC_TOP_DIR}/configs/SafeMultisigWallet.abi.json" \
+            --abi "${CONFIGS_DIR}/SafeMultisigWallet.abi.json" \
             --sign "${KEYS_DIR}/msig.keys.json" \
             >"${ELECTIONS_WORK_DIR}/recover_stake.transId"
 
@@ -218,9 +218,9 @@ bash "${ELECTIONS_WORK_DIR}/elector-run3"
 validator_query_boc=$(base64 --wrap=0 "${ELECTIONS_WORK_DIR}/validator-query.boc")
 elector_addr=$(cat "${ELECTIONS_WORK_DIR}/elector-addr-base64")
 
-"${TON_BUILD_DIR}/utils/tonos-cli" call "${MSIG_ADDR}" submitTransaction \
+"${UTILS_DIR}/tonos-cli" call "${MSIG_ADDR}" submitTransaction \
     "{\"dest\":\"${elector_addr}\",\"value\":\"${NANOSTAKE}\",\"bounce\":true,\"allBalance\":false,\"payload\":\"${validator_query_boc}\"}" \
-    --abi "${NET_TON_DEV_SRC_TOP_DIR}/configs/SafeMultisigWallet.abi.json" \
+    --abi "${CONFIGS_DIR}/SafeMultisigWallet.abi.json" \
     --sign "${KEYS_DIR}/msig.keys.json" \
     >"${ELECTIONS_WORK_DIR}/process_new_stake.transId"
 

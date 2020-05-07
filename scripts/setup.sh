@@ -28,7 +28,6 @@ until [ "$(echo "${MY_ADDR}" | grep "\." -o | wc -l)" -eq 3 ] ; do
     set +e
     MY_ADDR="$(curl -sS 2ip.ru)":${ADNL_PORT}
     set -e
-
 done
 echo "INFO: MY_ADDR = ${MY_ADDR}"
 
@@ -39,7 +38,7 @@ sudo chown "${SETUP_USER}:${SETUP_GROUP}" "${TON_WORK_DIR}"
 mkdir -p "${TON_WORK_DIR}/etc"
 mkdir -p "${TON_WORK_DIR}/db"
 
-cp "${NET_TON_DEV_SRC_TOP_DIR}/configs/ton-global.config.json" "${TON_WORK_DIR}/etc/ton-global.config.json"
+cp "${CONFIGS_DIR}/ton-global.config.json" "${TON_WORK_DIR}/etc/ton-global.config.json"
 
 echo "INFO: generate initial ${TON_WORK_DIR}/db/config.json..."
 "${TON_BUILD_DIR}/validator-engine/validator-engine" -C "${TON_WORK_DIR}/etc/ton-global.config.json" --db "${TON_WORK_DIR}/db" --ip "${MY_ADDR}"
@@ -50,9 +49,9 @@ chmod 700 "${KEYS_DIR}"
 
 cd "${KEYS_DIR}"
 
-"${TON_BUILD_DIR}/utils/generate-random-id" -m keys -n server > "${KEYS_DIR}/keys_s"
-"${TON_BUILD_DIR}/utils/generate-random-id" -m keys -n liteserver > "${KEYS_DIR}/keys_l"
-"${TON_BUILD_DIR}/utils/generate-random-id" -m keys -n client > "${KEYS_DIR}/keys_c"
+"${UTILS_DIR}/generate-random-id" -m keys -n server > "${KEYS_DIR}/keys_s"
+"${UTILS_DIR}/generate-random-id" -m keys -n liteserver > "${KEYS_DIR}/keys_l"
+"${UTILS_DIR}/generate-random-id" -m keys -n client > "${KEYS_DIR}/keys_c"
 chmod 600 "${KEYS_DIR}"/*
 
 find "${KEYS_DIR}"
@@ -92,12 +91,5 @@ awk '{
 mv "${TON_WORK_DIR}/db/config.json.tmp" "${TON_WORK_DIR}/db/config.json"
 
 find "${TON_WORK_DIR}"
-
-rm -rf "${NET_TON_DEV_SRC_TOP_DIR}/ton-labs-contracts"
-git clone https://github.com/tonlabs/ton-labs-contracts.git "${NET_TON_DEV_SRC_TOP_DIR}/ton-labs-contracts"
-rm -f "${NET_TON_DEV_SRC_TOP_DIR}/configs/SafeMultisigWallet.tvc"
-rm -f "${NET_TON_DEV_SRC_TOP_DIR}/configs/SafeMultisigWallet.abi.json"
-cp "${NET_TON_DEV_SRC_TOP_DIR}/ton-labs-contracts/solidity/safemultisig/SafeMultisigWallet.tvc" "${NET_TON_DEV_SRC_TOP_DIR}/configs"
-cp "${NET_TON_DEV_SRC_TOP_DIR}/ton-labs-contracts/solidity/safemultisig/SafeMultisigWallet.abi.json" "${NET_TON_DEV_SRC_TOP_DIR}/configs"
 
 echo "INFO: setup TON node... DONE"
