@@ -46,7 +46,7 @@ NODE_PREINIT_CONFIGS_DIR="${CONFIGS_DIR}/preinit_${IP_ADDRESS}"
 rm -rf "${NODE_PREINIT_CONFIGS_DIR}"
 mkdir -p "${NODE_PREINIT_CONFIGS_DIR}"
 
-date | awk '{
+date | gawk '{
     print "{";
     print "    \"@type\": \"config.global\",";
     print "    \"dht\": {";
