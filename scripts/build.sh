@@ -25,6 +25,7 @@ if [ "${INSTALL_DEPENDENCIES}" = "yes" ]; then
         cargo \
         ccache \
         cmake \
+        gawk \
         gcc \
         gperf \
         g++ \
