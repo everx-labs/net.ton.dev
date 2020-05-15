@@ -51,13 +51,16 @@ echo "INFO: clone ${TON_GITHUB_REPO} (${TON_STABLE_GITHUB_COMMIT_ID})... DONE"
 cd "${TON_SRC_DIR}"
 git apply "${NET_TON_DEV_SRC_TOP_DIR}/patches/0001-Fix-for-neighbours-unreliability.patch"
 
+# Get AVX support
+[ $(grep -cim1 avx /proc/cpuinfo) -eq 1 ] && TON_ARCH="-DTON_ARCH=corei7-avx"
+
 echo "INFO: build a node..."
 mkdir -p "${TON_BUILD_DIR}"
 cd "${TON_BUILD_DIR}"
 #cmake -DCMAKE_BUILD_TYPE=Release ..
 #cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo ..
 #cmake --build .
-cmake .. -G "Ninja" -DCMAKE_BUILD_TYPE=RelWithDebInfo -DPORTABLE=ON -DTON_ARCH=corei7-avx
+cmake .. -G "Ninja" -DCMAKE_BUILD_TYPE=RelWithDebInfo -DPORTABLE=ON $TON_ARCH
 ninja
 echo "INFO: build a node... DONE"
 
