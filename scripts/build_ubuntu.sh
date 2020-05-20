@@ -21,8 +21,8 @@ SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)
 if [ "${INSTALL_DEPENDENCIES}" = "yes" ]; then
     echo "INFO: install dependencies..."
     sudo apt update && sudo apt -y install \
-        git \
         build-essential \
+        git \
         cargo \
         ccache \
         cmake \
