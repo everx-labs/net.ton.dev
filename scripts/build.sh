@@ -60,7 +60,8 @@ cd "${TON_BUILD_DIR}"
 #cmake -DCMAKE_BUILD_TYPE=Release ..
 #cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo ..
 #cmake --build .
-cmake .. -G "Ninja" -DCMAKE_BUILD_TYPE=RelWithDebInfo -DPORTABLE=ON $TON_ARCH
+#cmake .. -G "Ninja" -DCMAKE_BUILD_TYPE=RelWithDebInfo -DPORTABLE=ON $TON_ARCH
+cmake .. -G "Ninja" -DCMAKE_BUILD_TYPE=Release -DPORTABLE=ON $TON_ARCH
 ninja
 echo "INFO: build a node... DONE"
 
