@@ -1,19 +1,5 @@
 #!/bin/bash -eE
 
-# Copyright 2020 TON DEV SOLUTIONS LTD.
-#
-# Licensed under the SOFTWARE EVALUATION License (the "License"); you may not use
-# this file except in compliance with the License.  You may obtain a copy of the
-# License at:
-#
-# https://www.ton.dev/licenses
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific TON DEV software governing permissions and limitations
-# under the License.
-
 SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)
 # shellcheck source=env.sh
 . "${SCRIPT_DIR}/env.sh"
@@ -37,6 +23,10 @@ if [ "${INSTALL_DEPENDENCIES}" = "yes" ]; then
         ninja-build \
         pkg-config \
         zlib1g-dev
+    curl https://sh.rustup.rs -sSf | sh -s -- -y
+    #shellcheck source=$HOME/.cargo/env
+    . "$HOME/.cargo/env"
+    rustup update
     echo "INFO: install dependencies... DONE"
 fi
 
@@ -52,7 +42,7 @@ cd "${TON_SRC_DIR}"
 git apply "${NET_TON_DEV_SRC_TOP_DIR}/patches/0001-Fix-for-neighbours-unreliability.patch"
 
 # Get AVX support
-[ $(grep -cim1 avx /proc/cpuinfo) -eq 1 ] && TON_ARCH="-DTON_ARCH=corei7-avx"
+[ "$(grep -cim1 avx /proc/cpuinfo)" -eq 1 ] && TON_ARCH="-DTON_ARCH=corei7-avx"
 
 echo "INFO: build a node..."
 mkdir -p "${TON_BUILD_DIR}"
