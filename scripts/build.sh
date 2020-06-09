@@ -11,6 +11,7 @@ if [ "${INSTALL_DEPENDENCIES}" = "yes" ]; then
         cargo \
         ccache \
         cmake \
+        curl \
         gawk \
         gcc \
         gperf \
