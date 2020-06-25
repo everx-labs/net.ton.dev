@@ -13,7 +13,7 @@ NET_TON_DEV_SRC_TOP_DIR=$(cd "${SCRIPT_DIR}/../" && pwd -P)
 export NET_TON_DEV_SRC_TOP_DIR
 export TON_GITHUB_REPO="https://github.com/ton-blockchain/ton.git"
 #export TON_STABLE_GITHUB_COMMIT_ID="master"
-export TON_STABLE_GITHUB_COMMIT_ID="eecf05ca5934c8c65c8113237fa4a00adcfea697"
+export TON_STABLE_GITHUB_COMMIT_ID="dbde9c1c40c1fae11fd20d6e4dbd4223eec47a8d"
 export TON_SRC_DIR="${NET_TON_DEV_SRC_TOP_DIR}/ton"
 export TON_BUILD_DIR="${TON_SRC_DIR}/build"
 export TONOS_CLI_SRC_DIR="${NET_TON_DEV_SRC_TOP_DIR}/tonos-cli"
