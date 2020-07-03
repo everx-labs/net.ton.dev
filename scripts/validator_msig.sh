@@ -237,7 +237,7 @@ if [ "$STAKE" -lt "${MIN_STAKE}" ]; then
     exit 1
 fi
 
-NANOSTAKE=$("${UTILS_DIR}/tonos-cli" convert tokens "$STAKE")
+NANOSTAKE=$("${UTILS_DIR}/tonos-cli" convert tokens "$STAKE" | tail -1)
 echo "INFO: NANOSTAKE = $NANOSTAKE nanotokens"
 
 for i in $(seq ${TONOS_CLI_SEND_ATTEMPTS}); do
