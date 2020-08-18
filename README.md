@@ -6,7 +6,6 @@ This HOWTO contains instructions on how to build and configure a validator node 
 ## 1. System Requirements
 | Configuration | CPU (cores) | RAM (GiB) | Storage (GiB) | Network (Gbit/s)|
 |---|:---|:---|:---|:---|
-| Minimal |8|16|1000|1|
 | Recommended |16|32|1000|1| 
 
 SSD disks are recommended for /var/ton-work/db storage.
