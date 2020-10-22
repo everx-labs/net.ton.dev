@@ -632,29 +632,6 @@
           "@type": "dht.node",
           "id": {
             "@type": "pub.ed25519",
-            "key": "HefxlS37Ih0viOI2p/AVav+pWVnhS4rqXdn+n1IA7cs="
-          },
-          "addr_list": {
-            "@type": "adnl.addressList",
-            "addrs": [
-              {
-                "@type": "adnl.address.udp",
-                "ip": -1846591358,
-                "port": 30303
-              }
-            ],
-            "version": 1602709601,
-            "reinit_date": 1601042089,
-            "priority": 0,
-            "expire_at": 1602710601
-          },
-          "version": 1602709601,
-          "signature": "jEb0PH28JLcIdkZEqm7TOc2QjCO43cckwY2RVPcIfBZoTaadvazFLIqnQ9F3WX/Ie5zX4homv5mDtz9/RNE3AA=="
-        },
-        {
-          "@type": "dht.node",
-          "id": {
-            "@type": "pub.ed25519",
             "key": "cBBU0Tpre0nwgcjBP8PQe9hjr0o6JMq7r/g4QuKaBdI="
           },
           "addr_list": {
