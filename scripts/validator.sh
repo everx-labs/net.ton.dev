@@ -1,7 +1,5 @@
 #!/bin/bash -eE
 
-#DEBUG="yes"
-
 if [ "$DEBUG" = "yes" ]; then
     set -x
 fi
@@ -68,7 +66,7 @@ if [ "$election_id" == "0" ]; then
             printf " compute_returned_stake 0x" addr "\" ";
             print  " -rc \"quit\" &> " KEYS_DIR "/recover-state"
         }
-    }' "${KEYS_DIR}/${HOSTNAME}-dump" "${KEYS_DIR}/elector-addr" >"${KEYS_DIR}/recover-run"
+    }' "${KEYS_DIR}/${VALIDATOR_NAME}-dump" "${KEYS_DIR}/elector-addr" >"${KEYS_DIR}/recover-run"
 
     if [ "$DEBUG" = "yes" ]; then
         echo "${KEYS_DIR}/recover-run:"
@@ -92,11 +90,11 @@ if [ "$election_id" == "0" ]; then
                 printf "-p " KEYS_DIR "/liteserver.pub -a 127.0.0.1:3031 ";
                 print  "-rc \"getaccount " $6 "\" -rc \"quit\" &> " KEYS_DIR "/recover-state"
             }
-        }' "${KEYS_DIR}/${HOSTNAME}-dump" >"${KEYS_DIR}/recover-run1"
+        }' "${KEYS_DIR}/${VALIDATOR_NAME}-dump" >"${KEYS_DIR}/recover-run1"
 
         bash "${KEYS_DIR}/recover-run1"
 
-        awk -v validator="$HOSTNAME" -v KEYS_DIR="${KEYS_DIR}" -v TON_BUILD_DIR="${TON_BUILD_DIR}" -v TON_SRC_DIR="${TON_SRC_DIR}" '{
+        awk -v validator="$VALIDATOR_NAME" -v KEYS_DIR="${KEYS_DIR}" -v TON_BUILD_DIR="${TON_BUILD_DIR}" -v TON_SRC_DIR="${TON_SRC_DIR}" '{
             if (NR == 1) {
                 elector = $0
             } else if ($1 == "data:(just") {
@@ -134,7 +132,7 @@ awk -v KEYS_DIR="${KEYS_DIR}" -v TON_BUILD_DIR="${TON_BUILD_DIR}" '{
         printf "-p " KEYS_DIR "/liteserver.pub -a 127.0.0.1:3031 ";
         print  "-rc \"getaccount " $6 "\" -rc \"quit\" &> " KEYS_DIR "/wallet-state"
     }
-}' "${KEYS_DIR}/${HOSTNAME}-dump" >"${KEYS_DIR}/wallet-state-run"
+}' "${KEYS_DIR}/${VALIDATOR_NAME}-dump" >"${KEYS_DIR}/wallet-state-run"
 
 if [ "$DEBUG" = "yes" ]; then
     echo "${KEYS_DIR}/wallet-state-run:"
@@ -143,7 +141,7 @@ fi
 
 bash "${KEYS_DIR}/wallet-state-run"
 
-has_grams=$(awk -v validator="$HOSTNAME" '{
+has_grams=$(awk -v validator="$VALIDATOR_NAME" '{
     if ($1 == "amount:(var_uint") {
         balance = substr($3, 7, length($3)-8);
         if (length(balance) >= 14) {
@@ -181,14 +179,14 @@ date +"INFO: %F %T election_id = $election_id"
     -p "${KEYS_DIR}/server.pub" \
     -a 127.0.0.1:3030 \
     -c "newkey" -c "quit" \
-    &>"${KEYS_DIR}/${HOSTNAME}-election-key"
+    &>"${KEYS_DIR}/${VALIDATOR_NAME}-election-key"
 
 "${TON_BUILD_DIR}/validator-engine-console/validator-engine-console" \
     -k "${KEYS_DIR}/client" \
     -p "${KEYS_DIR}/server.pub" \
     -a 127.0.0.1:3030 \
     -c "newkey" -c "quit" \
-    &>"${KEYS_DIR}/${HOSTNAME}-election-adnl-key"
+    &>"${KEYS_DIR}/${VALIDATOR_NAME}-election-adnl-key"
 
 "${TON_BUILD_DIR}/lite-client/lite-client" \
     -p "${KEYS_DIR}/liteserver.pub" \
@@ -196,7 +194,7 @@ date +"INFO: %F %T election_id = $election_id"
     -rc "getconfig 15" -rc "quit" \
     &>"${KEYS_DIR}/elector-params"
 
-awk -v validator="$HOSTNAME" -v KEYS_DIR="${KEYS_DIR}" -v TON_BUILD_DIR="${TON_BUILD_DIR}" -v TON_SRC_DIR="${TON_SRC_DIR}" '{
+awk -v validator="$VALIDATOR_NAME" -v KEYS_DIR="${KEYS_DIR}" -v TON_BUILD_DIR="${TON_BUILD_DIR}" -v TON_SRC_DIR="${TON_SRC_DIR}" '{
     if (NR == 1) {
         election_start = $1 + 0
     } else if (($1 == "created") && ($2 == "new") && ($3 == "key")) {
@@ -229,7 +227,7 @@ awk -v validator="$HOSTNAME" -v KEYS_DIR="${KEYS_DIR}" -v TON_BUILD_DIR="${TON_B
         printf election_start " 2 " key_adnl " " KEYS_DIR "/validator-to-sign.bin ";
         print  "> " KEYS_DIR "/" validator "-request-dump"
     }
-}' "${KEYS_DIR}/election-id" "${KEYS_DIR}/${HOSTNAME}-election-key" "${KEYS_DIR}/${HOSTNAME}-election-adnl-key" "${KEYS_DIR}/elector-params" >"${KEYS_DIR}/elector-run1"
+}' "${KEYS_DIR}/election-id" "${KEYS_DIR}/${VALIDATOR_NAME}-election-key" "${KEYS_DIR}/${VALIDATOR_NAME}-election-adnl-key" "${KEYS_DIR}/elector-params" >"${KEYS_DIR}/elector-run1"
 
 if [ "$DEBUG" = "yes" ]; then
     echo "${KEYS_DIR}/elector-run1:"
@@ -238,7 +236,7 @@ fi
 
 bash "${KEYS_DIR}/elector-run1"
 
-awk -v validator="$HOSTNAME" -v KEYS_DIR="${KEYS_DIR}" -v TON_BUILD_DIR="${TON_BUILD_DIR}" '{
+awk -v validator="$VALIDATOR_NAME" -v KEYS_DIR="${KEYS_DIR}" -v TON_BUILD_DIR="${TON_BUILD_DIR}" '{
     if (NR == 2) {
         request = $1
     } else if (($1 == "created") && ($2 == "new") && ($3 == "key")) {
@@ -247,7 +245,7 @@ awk -v validator="$HOSTNAME" -v KEYS_DIR="${KEYS_DIR}" -v TON_BUILD_DIR="${TON_B
         printf "-c \"exportpub " $4 "\" ";
         print  "-c \"sign " $4 " " request "\" &> " KEYS_DIR "/" validator "-request-dump1"
    }
-}' "${KEYS_DIR}/${HOSTNAME}-request-dump" "${KEYS_DIR}/${HOSTNAME}-election-key" >"${KEYS_DIR}/elector-run2"
+}' "${KEYS_DIR}/${VALIDATOR_NAME}-request-dump" "${KEYS_DIR}/${VALIDATOR_NAME}-election-key" >"${KEYS_DIR}/elector-run2"
 
 if [ "$DEBUG" = "yes" ]; then
     echo "${KEYS_DIR}/elector-run2:"
@@ -256,7 +254,7 @@ fi
 
 bash "${KEYS_DIR}/elector-run2"
 
-awk -v validator="$HOSTNAME" -v KEYS_DIR="${KEYS_DIR}" -v TON_BUILD_DIR="${TON_BUILD_DIR}" -v TON_SRC_DIR="${TON_SRC_DIR}" '{
+awk -v validator="$VALIDATOR_NAME" -v KEYS_DIR="${KEYS_DIR}" -v TON_BUILD_DIR="${TON_BUILD_DIR}" -v TON_SRC_DIR="${TON_SRC_DIR}" '{
     if (NR == 1) {
         election_start = $1 + 0
     } else if (($1 == "got") && ($2 == "public") && ($3 == "key:")) {
@@ -270,7 +268,7 @@ awk -v validator="$HOSTNAME" -v KEYS_DIR="${KEYS_DIR}" -v TON_BUILD_DIR="${TON_B
         printf " " key " " signature " " KEYS_DIR "/" validator "-query.boc ";
         print  "> " KEYS_DIR "/" validator "-request-dump2"
     }
-}' "${KEYS_DIR}/election-id" "${KEYS_DIR}/${HOSTNAME}-request-dump1" "${KEYS_DIR}/${HOSTNAME}-election-adnl-key" >"${KEYS_DIR}/elector-run3"
+}' "${KEYS_DIR}/election-id" "${KEYS_DIR}/${VALIDATOR_NAME}-request-dump1" "${KEYS_DIR}/${VALIDATOR_NAME}-election-adnl-key" >"${KEYS_DIR}/elector-run3"
 
 if [ "$DEBUG" = "yes" ]; then
     echo "${KEYS_DIR}/elector-run3:"
@@ -279,7 +277,7 @@ fi
 
 bash "${KEYS_DIR}/elector-run3"
 
-awk -v validator="$HOSTNAME" -v KEYS_DIR="${KEYS_DIR}" -v stake="$STAKE" -v TON_BUILD_DIR="${TON_BUILD_DIR}" -v TON_SRC_DIR="${TON_SRC_DIR}" '{
+awk -v validator="$VALIDATOR_NAME" -v KEYS_DIR="${KEYS_DIR}" -v stake="$STAKE" -v TON_BUILD_DIR="${TON_BUILD_DIR}" -v TON_SRC_DIR="${TON_SRC_DIR}" '{
     if (NR == 1) {
         elector = $0
     } else if ($1 == "data:(just") {
