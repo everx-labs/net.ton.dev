@@ -37,7 +37,10 @@ if [ "${INSTALL_DEPENDENCIES}" = "yes" ]; then
     echo "INFO: install dependencies... DONE"
 fi
 
-rm -rf "${TON_SRC_DIR}"
+if [ -d "${TON_SRC_DIR}" ]; then
+    echo "ERROR: ${TON_SRC_DIR} exists, remove it and re-run the script"
+    exit 1
+fi
 
 echo "INFO: clone ${TON_GITHUB_REPO} (${TON_STABLE_GITHUB_COMMIT_ID})..."
 git clone --recursive "${TON_GITHUB_REPO}" "${TON_SRC_DIR}"
@@ -47,10 +50,6 @@ echo "INFO: clone ${TON_GITHUB_REPO} (${TON_STABLE_GITHUB_COMMIT_ID})... DONE"
 echo "INFO: build a node..."
 mkdir -p "${TON_BUILD_DIR}"
 cd "${TON_BUILD_DIR}"
-#cmake -DCMAKE_BUILD_TYPE=Release ..
-#cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo ..
-#cmake --build .
-#cmake .. -G "Ninja" -DCMAKE_BUILD_TYPE=RelWithDebInfo -DPORTABLE=ON
 cmake .. -G "Ninja" -DCMAKE_BUILD_TYPE=Release -DPORTABLE=ON
 ninja
 echo "INFO: build a node... DONE"

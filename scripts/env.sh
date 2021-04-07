@@ -6,9 +6,7 @@ then
 fi
 
 SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)
-# Verified on Ubuntu 18.04
 export INSTALL_DEPENDENCIES="yes"
-#NET_TON_DEV_SRC_TOP_DIR=$(git rev-parse --show-toplevel)
 NET_TON_DEV_SRC_TOP_DIR=$(cd "${SCRIPT_DIR}/../" && pwd -P)
 export NET_TON_DEV_SRC_TOP_DIR
 export TON_GITHUB_REPO="https://github.com/tonlabs/ton-1.git"
