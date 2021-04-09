@@ -170,10 +170,12 @@ recover_stake() {
 
     case ${ELECTOR_TYPE} in
     "fift")
-        RECOVER_AMOUNT_HEX=$(${UTILS_DIR}/tonos-cli runget ${ELECTOR_ADDR} compute_returned_stake "${MSIG_ADDR_HEX}" 2>&1 | grep "Result:" | awk -F'"' '{print $2}')
+        TONOS_CLI_OUTPUT=$(${UTILS_DIR}/tonos-cli runget ${ELECTOR_ADDR} compute_returned_stake "${MSIG_ADDR_HEX}" 2>&1)
+        RECOVER_AMOUNT_HEX=$(echo "${TONOS_CLI_OUTPUT}" | awk -F'"' '/Result:/ {print $2}')
         ;;
     "solidity")
-        RECOVER_AMOUNT_HEX=$(${UTILS_DIR}/tonos-cli run ${ELECTOR_ADDR} compute_returned_stake "{\"wallet_addr\":\"${MSIG_ADDR_HEX}\"}" --abi ${CONFIGS_DIR}/Elector.abi.json 2>&1 | grep "value0" | awk '{print $2}' | tr -d '"')
+        TONOS_CLI_OUTPUT=$(${UTILS_DIR}/tonos-cli run ${ELECTOR_ADDR} compute_returned_stake "{\"wallet_addr\":\"${MSIG_ADDR_HEX}\"}" --abi ${CONFIGS_DIR}/Elector.abi.json 2>&1)
+        RECOVER_AMOUNT_HEX=$(echo "${TONOS_CLI_OUTPUT}" | awk '/value0/ {print $2}' | tr -d '"')
         ;;
     *)
         echo "ERROR: unknown ELECTOR_TYPE (${ELECTOR_TYPE})"
@@ -231,10 +233,12 @@ recover_stake() {
 prepare_for_elections() {
     case ${ELECTOR_TYPE} in
     "fift")
-        ACTIVE_ELECTION_ID_HEX=$(${UTILS_DIR}/tonos-cli runget ${ELECTOR_ADDR} active_election_id 2>&1 | grep "Result:" | awk -F'"' '{print $2}')
+        TONOS_CLI_OUTPUT=$(${UTILS_DIR}/tonos-cli runget ${ELECTOR_ADDR} active_election_id 2>&1)
+        ACTIVE_ELECTION_ID_HEX=$(echo "${TONOS_CLI_OUTPUT}" | awk -F'"' '/Result:/ {print $2}')
         ;;
     "solidity")
-        ACTIVE_ELECTION_ID_HEX=$(${UTILS_DIR}/tonos-cli run ${ELECTOR_ADDR} active_election_id {} --abi ${CONFIGS_DIR}/Elector.abi.json 2>&1 | grep "value0" | awk '{print $2}' | tr -d '"')
+        TONOS_CLI_OUTPUT=$(${UTILS_DIR}/tonos-cli run ${ELECTOR_ADDR} active_election_id {} --abi ${CONFIGS_DIR}/Elector.abi.json 2>&1)
+        ACTIVE_ELECTION_ID_HEX=$(echo "${TONOS_CLI_OUTPUT}" | awk '/value0/ {print $2}' | tr -d '"')
         ;;
     *)
         echo "ERROR: unknown ELECTOR_TYPE (${ELECTOR_TYPE})"
@@ -315,10 +319,10 @@ create_elector_request() {
 
     if [ "${ELECTIONS_ARTEFACTS_CREATED}" = "0" ]; then
         GLOBAL_CONFIG_15_RAW=$(${UTILS_DIR}/tonos-cli getconfig 15 2>&1)
-        ELECTIONS_END_BEFORE=$(echo "$GLOBAL_CONFIG_15_RAW" | grep "elections_end_before" | awk '{print $2}' | tr -d ',')
-        ELECTIONS_START_BEFORE=$(echo "$GLOBAL_CONFIG_15_RAW" | grep "elections_start_before" | awk '{print $2}' | tr -d ',')
-        STAKE_HELD_FOR=$(echo "$GLOBAL_CONFIG_15_RAW" | grep "stake_held_for" | awk '{print $2}' | tr -d ',')
-        VALIDATORS_ELECTED_FOR=$(echo "$GLOBAL_CONFIG_15_RAW" | grep "validators_elected_for" | awk '{print $2}' | tr -d ',')
+        ELECTIONS_END_BEFORE=$(echo "$GLOBAL_CONFIG_15_RAW" | awk '/elections_end_before/ {print $2}' | tr -d ',')
+        ELECTIONS_START_BEFORE=$(echo "$GLOBAL_CONFIG_15_RAW" | awk '/elections_start_before/ {print $2}' | tr -d ',')
+        STAKE_HELD_FOR=$(echo "$GLOBAL_CONFIG_15_RAW" | awk '/stake_held_for/ {print $2}' | tr -d ',')
+        VALIDATORS_ELECTED_FOR=$(echo "$GLOBAL_CONFIG_15_RAW" | awk '/validators_elected_for/ {print $2}' | tr -d ',')
         echo "INFO: ELECTIONS_START_BEFORE = ${ELECTIONS_START_BEFORE}"
         echo "INFO: ELECTIONS_END_BEFORE = ${ELECTIONS_END_BEFORE}"
         echo "INFO: STAKE_HELD_FOR = ${STAKE_HELD_FOR}"
@@ -351,7 +355,7 @@ create_elector_request() {
                 -c "newkey" -c "quit" \
                 &>"${ELECTIONS_WORK_DIR}/${VALIDATOR_NAME}-election-key"
 
-            ELECTION_KEY=$(grep "created new key" "${ELECTIONS_WORK_DIR}/${VALIDATOR_NAME}-election-key" | awk '{print $4}')
+            ELECTION_KEY=$(awk '/created new key/ {print $4}' "${ELECTIONS_WORK_DIR}/${VALIDATOR_NAME}-election-key")
             echo "INFO: ELECTION_KEY = ${ELECTION_KEY}"
 
             if [ -z "${ELECTION_KEY}" ]; then
@@ -371,7 +375,7 @@ create_elector_request() {
                 -c "newkey" -c "quit" \
                 &>"${ELECTIONS_WORK_DIR}/${VALIDATOR_NAME}-election-adnl-key"
 
-            ELECTION_ADNL_KEY=$(grep "created new key" "${ELECTIONS_WORK_DIR}/${VALIDATOR_NAME}-election-adnl-key" | awk '{print $4}')
+            ELECTION_ADNL_KEY=$(awk '/created new key/ {print $4}' "${ELECTIONS_WORK_DIR}/${VALIDATOR_NAME}-election-adnl-key")
             echo "INFO: ELECTION_ADNL_KEY = ${ELECTION_ADNL_KEY}"
 
             if [ -z "${ELECTION_ADNL_KEY}" ]; then
@@ -410,8 +414,8 @@ create_elector_request() {
                 -c "sign ${ELECTION_KEY} $REQUEST" \
                 &>"${ELECTIONS_WORK_DIR}/${VALIDATOR_NAME}-request-dump1"
 
-            PUBLIC_KEY=$(grep "got public key" "${ELECTIONS_WORK_DIR}/${VALIDATOR_NAME}-request-dump1" | awk '{print $4}')
-            SIGNATURE=$(grep "got signature" "${ELECTIONS_WORK_DIR}/${VALIDATOR_NAME}-request-dump1" | awk '{print $3}')
+            PUBLIC_KEY=$(awk '/got public key/ {print $4}' "${ELECTIONS_WORK_DIR}/${VALIDATOR_NAME}-request-dump1")
+            SIGNATURE=$(awk '/got signature/ {print $3}' "${ELECTIONS_WORK_DIR}/${VALIDATOR_NAME}-request-dump1")
 
             echo "INFO: PUBLIC_KEY = ${PUBLIC_KEY}"
             echo "INFO: SIGNATURE = ${SIGNATURE}"
@@ -452,8 +456,9 @@ create_elector_request() {
 }
 
 submit_stake() {
-    VALIDATOR_ACTUAL_BALANCE_NANO=$(${UTILS_DIR}/tonos-cli account "${MSIG_ADDR}" | grep balance | awk '{print $2}') # in nano tokens
-    VALIDATOR_ACTUAL_BALANCE=$((VALIDATOR_ACTUAL_BALANCE_NANO / 1000000000))                                         # in tokens
+    TONOS_CLI_OUTPUT=$(${UTILS_DIR}/tonos-cli account "${MSIG_ADDR}")
+    VALIDATOR_ACTUAL_BALANCE_NANO=$(echo "${TONOS_CLI_OUTPUT}" | awk '/balance/ {print $2}') # in nano tokens
+    VALIDATOR_ACTUAL_BALANCE=$((VALIDATOR_ACTUAL_BALANCE_NANO / 1000000000))                 # in tokens
     echo "INFO: ${MSIG_ADDR} VALIDATOR_ACTUAL_BALANCE = ${VALIDATOR_ACTUAL_BALANCE} tokens"
 
     if [ -z "${VALIDATOR_ACTUAL_BALANCE}" ]; then
@@ -511,8 +516,9 @@ submit_stake() {
             exit_and_clean 1 $LINENO
         fi
 
-        MIN_STAKE=$(${UTILS_DIR}/tonos-cli getconfig 17 | grep min_stake | awk '{print $2}' | tr -d '"' | tr -d ',') # in nanotokens
-        MIN_STAKE=$((MIN_STAKE / 1000000000))                                                                        # in tokens
+        TONOS_CLI_OUTPUT=$(${UTILS_DIR}/tonos-cli getconfig 17)
+        MIN_STAKE=$(echo "${TONOS_CLI_OUTPUT}" | awk '/min_stake/ {print $2}' | tr -d '"' | tr -d ',') # in nanotokens
+        MIN_STAKE=$((MIN_STAKE / 1000000000))                                                          # in tokens
 
         if [ -z "${MIN_STAKE}" ]; then
             echo "ERROR: MIN_STAKE is empty"

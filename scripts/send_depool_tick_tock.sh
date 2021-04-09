@@ -47,7 +47,7 @@ fi
 ELECTIONS_WORK_DIR="${KEYS_DIR}/elections/${ACTIVE_ELECTION_ID}"
 
 if [ ! -f "${ELECTIONS_WORK_DIR}/depool-tick-tock-submitted" ]; then
-    if ${UTILS_DIR}/tonos-cli depool ticktock; then
+    if ${UTILS_DIR}/tonos-cli depool --no-answer ticktock; then
         echo "${ACTIVE_ELECTION_ID}" >"${ELECTIONS_WORK_DIR}/depool-tick-tock-submitted"
     else
         echo "ERROR: 'tonos-cli depool ticktock' failed"
