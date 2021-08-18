@@ -68,11 +68,16 @@ init_env() {
             DEPOOL_ADDR_FILE="${CONFIGS_DIR}/depool.addr"
         fi
     else
+        UTILS_DIR="/utils"
+        KEYS_DIR="/root/ton-keys"
         SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)
         # shellcheck source=env.sh
         . "${SCRIPT_DIR}/env.sh"
 
         WORK_DIR="${SCRIPT_DIR}"
+        CONFIGS_DIR="$(cd "${WORK_DIR}/../configs" && pwd -P)"
+        LITE_SERVER_IP_ADDRESS="127.0.0.1"
+        LITE_SERVER_PORT="3030"
         CRYPTO_LIBS="${TON_SRC_DIR}/crypto/fift/lib:${TON_SRC_DIR}/crypto/smartcont"
         mkdir -p "${CONFIGS_DIR}"
         MSIG_ADDR_FILE="${KEYS_DIR}/${VALIDATOR_NAME}.addr"
@@ -120,7 +125,7 @@ check_env() {
     fi
 
     if [ "${RUST_NET_ENABLE}" = "yes" ]; then
-        if [ ! -f ${CONFIGS_DIR}/console.json ]; then
+        if [ ! -f "${CONFIGS_DIR}/console.json" ]; then
             echo "ERROR: ${CONFIGS_DIR}/console.json does not exist"
             exit_and_clean 1 $LINENO
         fi
@@ -132,15 +137,15 @@ check_env() {
     fi
 
     if [ ! -f "${CONFIGS_DIR}/SafeMultisigWallet.abi.json" ]; then
-        cd ${CONFIGS_DIR} && wget https://raw.githubusercontent.com/tonlabs/ton-labs-contracts/master/solidity/safemultisig/SafeMultisigWallet.abi.json
+        cd "${CONFIGS_DIR}" && wget https://raw.githubusercontent.com/tonlabs/ton-labs-contracts/master/solidity/safemultisig/SafeMultisigWallet.abi.json
     fi
 
-    if [ "${ELECTOR_TYPE}" = "solidity" ] && [ ! -f ${CONFIGS_DIR}/Elector.abi.json ]; then
+    if [ "${ELECTOR_TYPE}" = "solidity" ] && [ ! -f "${CONFIGS_DIR}/Elector.abi.json" ]; then
         echo "ERROR: ${CONFIGS_DIR}/Elector.abi.json does not exist"
         exit_and_clean 1 $LINENO
     fi
 
-    cd ${WORK_DIR}
+    cd "${WORK_DIR}"
     if [ "${DEPOOL_ENABLE}" = "yes" ]; then
         ${UTILS_DIR}/tonos-cli config --retries "${TONOS_CLI_RETRIES}" \
             --addr "${DEPOOL_ADDR}" --wallet "${MSIG_ADDR}" --keys "${KEYS_DIR}/msig.keys.json"
@@ -150,7 +155,7 @@ check_env() {
 
     if [ "$DEBUG" = "yes" ]; then
         echo "DEBUG: ${WORK_DIR}/tonos-cli.conf.json BEGIN"
-        cat ${WORK_DIR}/tonos-cli.conf.json
+        cat "${WORK_DIR}/tonos-cli.conf.json"
         echo "DEBUG: ${WORK_DIR}/tonos-cli.conf.json END"
     fi
 
@@ -178,7 +183,7 @@ recover_stake() {
         RECOVER_AMOUNT_HEX=$(echo "${TONOS_CLI_OUTPUT}" | awk -F'"' '/Result:/ {print $2}')
         ;;
     "solidity")
-        TONOS_CLI_OUTPUT=$(${UTILS_DIR}/tonos-cli run ${ELECTOR_ADDR} compute_returned_stake "{\"wallet_addr\":\"${MSIG_ADDR_HEX}\"}" --abi ${CONFIGS_DIR}/Elector.abi.json 2>&1)
+        TONOS_CLI_OUTPUT=$(${UTILS_DIR}/tonos-cli run ${ELECTOR_ADDR} compute_returned_stake "{\"wallet_addr\":\"${MSIG_ADDR_HEX}\"}" --abi "${CONFIGS_DIR}/Elector.abi.json" 2>&1)
         RECOVER_AMOUNT_HEX=$(echo "${TONOS_CLI_OUTPUT}" | awk '/value0/ {print $2}' | tr -d '"')
         ;;
     *)
@@ -197,7 +202,7 @@ recover_stake() {
 
     if [ "${RECOVER_AMOUNT}" != "0" ]; then
         if [ "${RUST_NET_ENABLE}" = "yes" ]; then
-            ${UTILS_DIR}/console -C ${CONFIGS_DIR}/console.json -c recover_stake
+            ${UTILS_DIR}/console -C "${CONFIGS_DIR}/console.json" -c recover_stake
             mv recover-query.boc "${TMP_DIR}/recover-query.boc"
         else
             "${TON_BUILD_DIR}/crypto/fift" -I "${CRYPTO_LIBS}" -s recover-stake.fif "${TMP_DIR}/recover-query.boc"
@@ -241,7 +246,7 @@ prepare_for_elections() {
         ACTIVE_ELECTION_ID_HEX=$(echo "${TONOS_CLI_OUTPUT}" | awk -F'"' '/Result:/ {print $2}')
         ;;
     "solidity")
-        TONOS_CLI_OUTPUT=$(${UTILS_DIR}/tonos-cli run ${ELECTOR_ADDR} active_election_id {} --abi ${CONFIGS_DIR}/Elector.abi.json 2>&1)
+        TONOS_CLI_OUTPUT=$(${UTILS_DIR}/tonos-cli run ${ELECTOR_ADDR} active_election_id {} --abi "${CONFIGS_DIR}/Elector.abi.json" 2>&1)
         ACTIVE_ELECTION_ID_HEX=$(echo "${TONOS_CLI_OUTPUT}" | awk '/value0/ {print $2}' | tr -d '"')
         ;;
     *)
@@ -347,9 +352,9 @@ create_elector_request() {
         fi
 
         if [ "${RUST_NET_ENABLE}" = "yes" ]; then
-            jq ".wallet_id = \"${VALIDATOR_MSIG_ADDR}\"" ${CONFIGS_DIR}/console.json >"${TMP_DIR}/console.json"
-            cp "${TMP_DIR}/console.json" ${CONFIGS_DIR}/console.json
-            ${UTILS_DIR}/console -C ${CONFIGS_DIR}/console.json -c "election-bid ${ELECTION_START} ${ELECTION_STOP}"
+            jq ".wallet_id = \"${VALIDATOR_MSIG_ADDR}\"" "${CONFIGS_DIR}/console.json" >"${TMP_DIR}/console.json"
+            cp "${TMP_DIR}/console.json" "${CONFIGS_DIR}/console.json"
+            ${UTILS_DIR}/console -C "${CONFIGS_DIR}/console.json" -c "election-bid ${ELECTION_START} ${ELECTION_STOP}"
             mv validator-query.boc "${ELECTIONS_WORK_DIR}"
         else
             if [ -f "${ELECTIONS_WORK_DIR}/${VALIDATOR_NAME}-election-key" ]; then
@@ -403,7 +408,7 @@ create_elector_request() {
                 -c "quit"
 
             "${TON_BUILD_DIR}/crypto/fift" \
-                -I ${CRYPTO_LIBS} \
+                -I "${CRYPTO_LIBS}" \
                 -s validator-elect-req.fif "${VALIDATOR_MSIG_ADDR}" "${ELECTION_START}" "${MAX_FACTOR}" "${ELECTION_ADNL_KEY}" "${ELECTIONS_WORK_DIR}/validator-to-sign.bin" \
                 &>"${ELECTIONS_WORK_DIR}/${VALIDATOR_NAME}-request-dump"
 
@@ -440,7 +445,7 @@ create_elector_request() {
             fi
 
             "${TON_BUILD_DIR}/crypto/fift" \
-                -I ${CRYPTO_LIBS} \
+                -I "${CRYPTO_LIBS}" \
                 -s validator-elect-signed.fif "${VALIDATOR_MSIG_ADDR}" "${ELECTION_START}" "${MAX_FACTOR}" "${ELECTION_ADNL_KEY}" "${PUBLIC_KEY}" "${SIGNATURE}" "${ELECTIONS_WORK_DIR}/validator-query.boc" \
                 &>"${ELECTIONS_WORK_DIR}/${VALIDATOR_NAME}-request-dump2"
         fi
