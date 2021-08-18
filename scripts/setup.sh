@@ -17,14 +17,17 @@ until [ "$(echo "${MY_ADDR}" | grep "\." -o | wc -l)" -eq 3 ] ; do
 done
 echo "INFO: MY_ADDR = ${MY_ADDR}"
 
-#sudo rm -rf "${TON_WORK_DIR}"
+if [ -d "${TON_WORK_DIR}" ]; then
+    echo "ERROR: ${TON_WORK_DIR} exists, remove it and re-run the script"
+    exit 1
+fi
 
 sudo mkdir -p "${TON_WORK_DIR}"
 sudo chown "${SETUP_USER}:${SETUP_GROUP}" "${TON_WORK_DIR}"
 mkdir -p "${TON_WORK_DIR}/etc"
 mkdir -p "${TON_WORK_DIR}/db"
 
-cat "${CONFIGS_DIR}/${NETWORK_TYPE}/ton-global.config.json" > "${TON_WORK_DIR}/etc/ton-global.config.json"
+cp "${CONFIGS_DIR}/${NETWORK_TYPE}/ton-global.config.json" "${TON_WORK_DIR}/etc/ton-global.config.json"
 
 echo "INFO: generate initial ${TON_WORK_DIR}/db/config.json..."
 "${TON_BUILD_DIR}/validator-engine/validator-engine" -C "${TON_WORK_DIR}/etc/ton-global.config.json" --db "${TON_WORK_DIR}/db" --ip "${MY_ADDR}"
@@ -42,8 +45,8 @@ chmod 600 "${KEYS_DIR}"/*
 
 find "${KEYS_DIR}"
 
-cat "${KEYS_DIR}/server" > "${TON_WORK_DIR}/db/keyring/$(awk '{print $1}' "${KEYS_DIR}/keys_s")"
-cat "${KEYS_DIR}/liteserver" > "${TON_WORK_DIR}/db/keyring/$(awk '{print $1}' "${KEYS_DIR}/keys_l")"
+mv "${KEYS_DIR}/server" "${TON_WORK_DIR}/db/keyring/$(awk '{print $1}' "${KEYS_DIR}/keys_s")"
+mv "${KEYS_DIR}/liteserver" "${TON_WORK_DIR}/db/keyring/$(awk '{print $1}' "${KEYS_DIR}/keys_l")"
 
 awk '{
     if (NR == 1) {
@@ -74,7 +77,7 @@ awk '{
     }
 }' "${KEYS_DIR}/keys_s" "${KEYS_DIR}/keys_c" "${KEYS_DIR}/keys_l" "${TON_WORK_DIR}/db/config.json" > "${TON_WORK_DIR}/db/config.json.tmp"
 
-cat "${TON_WORK_DIR}/db/config.json.tmp" > "${TON_WORK_DIR}/db/config.json"
+mv "${TON_WORK_DIR}/db/config.json.tmp" "${TON_WORK_DIR}/db/config.json"
 
 find "${TON_WORK_DIR}"
 

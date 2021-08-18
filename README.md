@@ -82,33 +82,15 @@ Make sure that the wallet was deployed at the address saved in `$(hostname -s).a
 
 Specify `<STAKE>` argument in tokens. This amount of tokens will be sent by wallet to Elector smart contract in every validation cycle.
 
-Run the validator script (periodically, e.g. each 60 min.):
+Run the validator script (periodically):
 
-    $ ./validator_msig.sh <STAKE> >> ./validator_msig.log 2>&1
+    $ ./validator.sh <STAKE> >> ./validator.log 2>&1
 
-cron example (run each hour):
+cron example (depool):
 
-    @hourly        script --return --quiet --append --command "cd /scripts/ && ./validator_msig.sh ${STAKE} 2>&1" /var/ton-work/validator_msig.log
+    */10 * * * *    /net.ton.dev/scripts/send_depool_tick_tock.sh >>/net.ton.dev/scripts/send_depool_tick_tock.log 2>&1
+    */5 * * * *     script --return --quiet --append --command "/net.ton.dev/scripts/validator.sh 2>&1" /net.ton.dev/scripts/validator.log
 
+cron example (multisig direct staking):
 
-### How validator script works
-
-Script runs every minute.
-
-1. Makes an initial check for masterchain.
-2. Checks startup time.
-3. Gets address of elector contract and reads `election_id` from elector contract.
-4. If `election_id` == 0 (that means no validator elections at the moment):
-    1. script requests size of validator stake that can be returned from elector. (by running Elector's `compute_returned_stake` get-method). Returned value will not be 0 if validator won previous elections and was a validator;
-    2. if this value != 0, script submits new transaction from wallet to Elector contract with 1 token and `recover-stake` payload;
-    3. if request to wallet succeeds, script extracts `transactionId` and prints it in terminal and then exits. Other wallet custodians should confirm transaction using this Id. 
-5. If `election_id` != 0 (that means it's time to participate in elections):
-    1. checks if `stop-election` file exists then exits;
-    2. checks if file `active-election-id` exists, then reads `active_election_id` from it and compares it to `election_id`. If they are equal then exits (it means that validator has already sent its stake to Elector in current elections);
-    3. calls `validator-engine-console` to generate new validator key and adnl address;
-    4. reads config param 15 to get elections timeouts;
-    5. runs `validator-elect-req.fif` fift script to generate unsigned validator election request;
-    6. calls `validator-engine-console` to sign election request with newly generated validator keypair;
-    7. submits new transaction from wallet to Elector contract with `$stake` amount of tokens and `process_new_stake` payload;
-    8. if request to wallet succeeds, script extracts `transactionId` and prints it in terminal;
-    9. wallet custodians should confirm transaction using this Id. When wallet accumulates the required number of confirmations, it sends validator election request to Elector.
+    */5 * * * *     script --return --quiet --append --command "/net.ton.dev/scripts/validator.sh <STAKE> 2>&1" /net.ton.dev/scripts/validator.log
