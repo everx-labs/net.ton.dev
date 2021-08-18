@@ -142,10 +142,10 @@ check_env() {
 
     cd ${WORK_DIR}
     if [ "${DEPOOL_ENABLE}" = "yes" ]; then
-        ${UTILS_DIR}/tonos-cli config --url "${SDK_URL}" --retries "${TONOS_CLI_RETRIES}" \
+        ${UTILS_DIR}/tonos-cli config --retries "${TONOS_CLI_RETRIES}" \
             --addr "${DEPOOL_ADDR}" --wallet "${MSIG_ADDR}" --keys "${KEYS_DIR}/msig.keys.json"
     else
-        ${UTILS_DIR}/tonos-cli config --url "${SDK_URL}" --retries "${TONOS_CLI_RETRIES}"
+        ${UTILS_DIR}/tonos-cli config --retries "${TONOS_CLI_RETRIES}"
     fi
 
     if [ "$DEBUG" = "yes" ]; then
@@ -154,9 +154,13 @@ check_env() {
         echo "DEBUG: ${WORK_DIR}/tonos-cli.conf.json END"
     fi
 
-    if [ "${TONOS_CLI_RETRIES}" != "$(jq .retries ${WORK_DIR}/tonos-cli.conf.json)" ]; then
-        echo "ERROR: wrong configuration in ${WORK_DIR}/tonos-cli.conf.json"
-        exit_and_clean 1 $LINENO
+    if [ -n "${SDK_URL}" ]; then
+        ${UTILS_DIR}/tonos-cli config --url "${SDK_URL}"
+    fi
+
+    if [ -n "${SDK_ENDPOINT_URL_LIST}" ]; then
+        # shellcheck disable=SC2086
+        ${UTILS_DIR}/tonos-cli config endpoint add ${SDK_URL} ${SDK_ENDPOINT_URL_LIST}
     fi
 }
 
@@ -318,11 +322,16 @@ create_elector_request() {
     fi
 
     if [ "${ELECTIONS_ARTEFACTS_CREATED}" = "0" ]; then
-        GLOBAL_CONFIG_15_RAW=$(${UTILS_DIR}/tonos-cli getconfig 15 2>&1)
-        ELECTIONS_END_BEFORE=$(echo "$GLOBAL_CONFIG_15_RAW" | awk '/elections_end_before/ {print $2}' | tr -d ',')
-        ELECTIONS_START_BEFORE=$(echo "$GLOBAL_CONFIG_15_RAW" | awk '/elections_start_before/ {print $2}' | tr -d ',')
-        STAKE_HELD_FOR=$(echo "$GLOBAL_CONFIG_15_RAW" | awk '/stake_held_for/ {print $2}' | tr -d ',')
-        VALIDATORS_ELECTED_FOR=$(echo "$GLOBAL_CONFIG_15_RAW" | awk '/validators_elected_for/ {print $2}' | tr -d ',')
+        # TODO tmp
+        #GLOBAL_CONFIG_15_RAW=$(${UTILS_DIR}/tonos-cli getconfig 15 2>&1)
+        #ELECTIONS_END_BEFORE=$(echo "$GLOBAL_CONFIG_15_RAW" | awk '/elections_end_before/ {print $2}' | tr -d ',')
+        #ELECTIONS_START_BEFORE=$(echo "$GLOBAL_CONFIG_15_RAW" | awk '/elections_start_before/ {print $2}' | tr -d ',')
+        #STAKE_HELD_FOR=$(echo "$GLOBAL_CONFIG_15_RAW" | awk '/stake_held_for/ {print $2}' | tr -d ',')
+        #VALIDATORS_ELECTED_FOR=$(echo "$GLOBAL_CONFIG_15_RAW" | awk '/validators_elected_for/ {print $2}' | tr -d ',')
+        ELECTIONS_END_BEFORE="8192"
+        ELECTIONS_START_BEFORE="32768"
+        STAKE_HELD_FOR="32768"
+        VALIDATORS_ELECTED_FOR="65536"
         echo "INFO: ELECTIONS_START_BEFORE = ${ELECTIONS_START_BEFORE}"
         echo "INFO: ELECTIONS_END_BEFORE = ${ELECTIONS_END_BEFORE}"
         echo "INFO: STAKE_HELD_FOR = ${STAKE_HELD_FOR}"
@@ -516,9 +525,12 @@ submit_stake() {
             exit_and_clean 1 $LINENO
         fi
 
-        TONOS_CLI_OUTPUT=$(${UTILS_DIR}/tonos-cli getconfig 17)
-        MIN_STAKE=$(echo "${TONOS_CLI_OUTPUT}" | awk '/min_stake/ {print $2}' | tr -d '"' | tr -d ',') # in nanotokens
-        MIN_STAKE=$((MIN_STAKE / 1000000000))                                                          # in tokens
+       # TODO tmp
+        #TONOS_CLI_OUTPUT=$(${UTILS_DIR}/tonos-cli getconfig 17)
+        #MIN_STAKE=$(echo "${TONOS_CLI_OUTPUT}" | awk '/min_stake/ {print $2}' | tr -d '"' | tr -d ',') # in nanotokens
+        #MIN_STAKE=$((MIN_STAKE / 1000000000))                                                          # in tokens
+        MIN_STAKE="10000"
+        echo "INFO: MIN_STAKE = ${MIN_STAKE} tokens"
 
         if [ -z "${MIN_STAKE}" ]; then
             echo "ERROR: MIN_STAKE is empty"
