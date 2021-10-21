@@ -6,11 +6,11 @@ then
 fi
 
 SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)
-export INSTALL_DEPENDENCIES="yes"
+export INSTALL_DEPENDENCIES=${INSTALL_DEPENDENCIES:-yes}
 NET_TON_DEV_SRC_TOP_DIR=$(cd "${SCRIPT_DIR}/../" && pwd -P)
 export NET_TON_DEV_SRC_TOP_DIR
 export TON_GITHUB_REPO="https://github.com/tonlabs/ton-1.git"
-export TON_STABLE_GITHUB_COMMIT_ID="37d1935f504c1d2939155325f0cbf2c1f595dbd4"
+export TON_STABLE_GITHUB_COMMIT_ID="fld"
 export TON_SRC_DIR="${NET_TON_DEV_SRC_TOP_DIR}/ton"
 export TON_BUILD_DIR="${TON_SRC_DIR}/build"
 export TONOS_CLI_SRC_DIR="${NET_TON_DEV_SRC_TOP_DIR}/tonos-cli"
@@ -21,9 +21,9 @@ export CONFIGS_DIR="${NET_TON_DEV_SRC_TOP_DIR}/configs"
 export ADNL_PORT="30310"
 HOSTNAME=$(hostname -s)
 export HOSTNAME
-export VALIDATOR_NAME="$HOSTNAME"
+export VALIDATOR_NAME=${VALIDATOR_NAME:-$HOSTNAME}
 export PATH="${UTILS_DIR}:$PATH"
 export LITESERVER_IP="127.0.0.1"
 export LITESERVER_PORT="3031"
 export ENGINE_ADDITIONAL_PARAMS=""
-export NETWORK_TYPE="net.ton.dev"
+
