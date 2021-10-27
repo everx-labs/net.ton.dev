@@ -42,6 +42,8 @@ declare -A KEYS=( [server]=keys_s [liteserver]=keys_l [client]=keys_c )
 for k in "${!KEYS[@]}"; do
     if [ ! -f "${KEYS_DIR}/$k" ] || [ ! -f "${KEYS_DIR}/${KEYS[$k]}" ]; then
         "${UTILS_DIR}/generate-random-id" -m keys -n "${KEYS_DIR}/$k" > "${KEYS_DIR}/${KEYS[$k]}"
+    else
+        echo "WARNING: ${KEYS_DIR}/$k or ${KEYS_DIR}/${KEYS[$k]} exist, using them"
     fi
 done
 
