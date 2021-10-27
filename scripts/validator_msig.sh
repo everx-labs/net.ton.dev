@@ -72,7 +72,7 @@ echo "INFO: recover_amount = ${recover_amount} nanotokens"
 if [ "$recover_amount" != "0" ]; then
     "${TON_BUILD_DIR}/crypto/fift" -I "${TON_SRC_DIR}/crypto/fift/lib:${TON_SRC_DIR}/crypto/smartcont" -s recover-stake.fif "${ELECTIONS_WORK_DIR}/recover-query.boc"
 
-    recover_query_boc=$(base64 --wrap=0 "${ELECTIONS_WORK_DIR}/recover-query.boc")
+    recover_query_boc=$(base64 "${ELECTIONS_WORK_DIR}/recover-query.boc" | tr -d '\n')
 
     for i in $(seq ${TONOS_CLI_SEND_ATTEMPTS}); do
         echo "INFO: tonos-cli submitTransaction attempt #${i}..."
@@ -211,7 +211,7 @@ awk -v validator="${VALIDATOR_NAME}" -v wallet_addr="$MSIG_ADDR" -v TON_BUILD_DI
 bash "${ELECTIONS_WORK_DIR}/elector-run3"
 
 #send validator query to elector contract using multisig
-validator_query_boc=$(base64 --wrap=0 "${ELECTIONS_WORK_DIR}/validator-query.boc")
+validator_query_boc=$(base64 "${ELECTIONS_WORK_DIR}/validator-query.boc" | tr -d '\n')
 elector_addr=$(cat "${ELECTIONS_WORK_DIR}/elector-addr-base64")
 
 VALIDATOR_ACTUAL_BALANCE=$("${UTILS_DIR}/tonos-cli" account "${MSIG_ADDR}" | grep balance | awk '{print $2}') # in nano tokens

@@ -175,7 +175,7 @@ if [ "${ELECTIONS_ARTEFACTS_CREATED}" = "0" ]; then
 fi
 
 if [ -f "${ELECTIONS_WORK_DIR}/validator-query.boc" ]; then
-    validator_query_boc=$(base64 --wrap=0 "${ELECTIONS_WORK_DIR}/validator-query.boc")
+    validator_query_boc=$(base64 "${ELECTIONS_WORK_DIR}/validator-query.boc" | tr -d '\n')
 else
     echo "ERROR: ${ELECTIONS_WORK_DIR}/validator-query.boc does not exist"
     rm -f "${ELECTIONS_WORK_DIR}/election-artefacts-created"
