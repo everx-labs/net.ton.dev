@@ -377,7 +377,7 @@ The following error may occur for a short time immediately after node deployment
 
     thread 'main' panicked at 'Can't create client: Os { code: 111, kind: ConnectionRefused, message: "Connection refused" }', bin/console.rs:454:59
 
-Currently this is expected behavior, unless it persists **for more than a few minutes**. If it does persist, check network status at https://ton.live/, and, if the network is up and running, review [deployment logs](#during-deployment) for errors.
+Currently this is expected behavior, unless it persists **for more than a few minutes**. If it does persist, check network status at https://net.ton.live/, and, if the network is up and running, review [deployment logs](#during-deployment) for errors.
 
 
 ## 3. Error executing command when checking node synchronization
@@ -386,7 +386,7 @@ The following error may occur for up to an hour after node deployment when attem
 
     Error executing command: Error receiving answer: early eof bin/console.rs:296
 
-Currently this is expected behavior, unless it persists **for more than one hour**. If it does persist, check network status at https://ton.live/, and, if the network is up and running, review [deployment logs](#during-deployment) for errors.
+Currently this is expected behavior, unless it persists **for more than one hour**. If it does persist, check network status at https://net.ton.live/, and, if the network is up and running, review [deployment logs](#during-deployment) for errors.
 
 
 ## 4. Cannot stop/restart/remove node container
