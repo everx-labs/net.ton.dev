@@ -100,4 +100,6 @@ RUN mkdir -p /ton-node/tools
 COPY --from=build /tonlabs/ton-node/target/release/ton_node /ton-node/ton_node_no_kafka
 COPY --from=build /tonlabs/ton-labs-node-tools/target/release/console /ton-node/tools/
 COPY --from=build /tonlabs/ton-labs-node-tools/target/release/keygen /ton-node/tools/
+COPY --from=build /tonlabs/ton-labs-node-tools/target/release/gendht /ton-node/tools/
+COPY --from=build /tonlabs/ton-labs-node-tools/target/release/zerostate /ton-node/tools/
 COPY --from=build /tonlabs/tonos-cli/target/release/tonos-cli /ton-node/tools/
