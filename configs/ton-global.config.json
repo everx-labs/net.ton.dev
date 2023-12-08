@@ -20,15 +20,15 @@
             ],
             "expire_at": 0,
             "priority": 0,
-            "reinit_date": 1643156693,
-            "version": 1643156693
+            "reinit_date": 1702017806,
+            "version": 1702017806
           },
           "id": {
             "@type": "pub.ed25519",
             "key": "oCvam27t1RhQj8TYw8spxsfTaTIrxQx0yGq0q2IEMaY="
           },
-          "signature": "OUKQ56sypldIK/506NfBMaptPn8m0GVXD9iDd6XRRSroUWT7pP9y7qIuBHJik3qNSCavLrPstjeOUY4irr4JDQ==",
-          "version": 1643156693
+          "signature": "aVweNU7iB8QPE1MuHreA0FR92VHOrCKvWr/h37lt3+NVaU+amBvicw73aYTiy6fxaxtS1D1MLiDaQikNDPTXAg==",
+          "version": 1702017806
         },
         {
           "@type": "dht.node",
@@ -43,15 +43,15 @@
             ],
             "expire_at": 0,
             "priority": 0,
-            "reinit_date": 1643156699,
-            "version": 1643156699
+            "reinit_date": 1702017809,
+            "version": 1702017809
           },
           "id": {
             "@type": "pub.ed25519",
             "key": "Fa6B3VbmBruMg3Fs5IYirAmuIlW1ESX5Kr+YYJSH6iM="
           },
-          "signature": "bNxZp3DC+t1C/i0jQmpUKf78ESaAURb0zrsNYYGpF39xSg0UB17dZwpc97iBOPIZwg1blqmJbgoJ7L6CsSuxDg==",
-          "version": 1643156699
+          "signature": "glQuSP4OLPer5u9XEUwcjrCjHx2DJbVWk8Kr5H9hZhdUj3AnzTjt559hlc5QwZt6Ooye3aQCpzqOITDjT13WDw==",
+          "version": 1702017809
         },
         {
           "@type": "dht.node",
@@ -66,15 +66,15 @@
             ],
             "expire_at": 0,
             "priority": 0,
-            "reinit_date": 1643156704,
-            "version": 1643156704
+            "reinit_date": 1702017813,
+            "version": 1702017813
           },
           "id": {
             "@type": "pub.ed25519",
             "key": "q6n2H1ZjoHBZ2BsNpoax+WZ+MchCieLhytCBI3t7VG4="
           },
-          "signature": "BviGmOhtLIuTY35Z94GmzEWzFYXfd6Nu53kyW9wRwkgsnUhhULJaJenKjnYwJ2lBzpN3cLhKYsfkYPQ8agCXCw==",
-          "version": 1643156704
+          "signature": "2j6QhjzPE0gGqkPIn2p9x+fdkaYP+kCd9X22moexZFxQjoej+GIDgflZcY4EBFWsfYveMP4nxg1VfYJPy/uwBQ==",
+          "version": 1702017813
         },
         {
           "@type": "dht.node",
@@ -89,15 +89,15 @@
             ],
             "expire_at": 0,
             "priority": 0,
-            "reinit_date": 1643156709,
-            "version": 1643156709
+            "reinit_date": 1702017816,
+            "version": 1702017816
           },
           "id": {
             "@type": "pub.ed25519",
             "key": "9mG2IlBG8V2mBsLXetgSYddLvNzf7ateIHeBeak9AAw="
           },
-          "signature": "j5q9PAVFCdskGEi4g7KXQeUrVOxdbZ/SgxR3ElNhGajqO3jZJ4CgYAELFige6tPBvmKQM+1QjZrjiozchBKBCA==",
-          "version": 1643156709
+          "signature": "BejJAawM6m6IK6fBsDQdKpDRFIrcyc5MYVNu7q+P4v1wB2YPQ+k86lgl2k3q+XJxb6OpRbe4Cx4cAjIlIftvBA==",
+          "version": 1702017816
         },
         {
           "@type": "dht.node",
@@ -112,15 +112,15 @@
             ],
             "expire_at": 0,
             "priority": 0,
-            "reinit_date": 1643156714,
-            "version": 1643156714
+            "reinit_date": 1702017820,
+            "version": 1702017820
           },
           "id": {
             "@type": "pub.ed25519",
             "key": "6drdUP4oF9vvDwTxuS76hLmA9fG0xWHOFJaMVHalVKU="
           },
-          "signature": "1qnTUiBwArVErsY1IGlWDuA3daPLK8wUHlNVCVBWN+t2j8iy6LYG+xMTupo9SCZPt+rw6/OZ4IdbLqGTjLjJBA==",
-          "version": 1643156714
+          "signature": "cTlToswVgBFWrHtkzIJbMfXH4+x5cIPMIyo4u5itimLD4FeF8C2PzWsQEXhuwX6cw4f0MzomfT46mjDSpL0sBw==",
+          "version": 1702017820
         },
         {
           "@type": "dht.node",
@@ -135,15 +135,15 @@
             ],
             "expire_at": 0,
             "priority": 0,
-            "reinit_date": 1643156719,
-            "version": 1643156719
+            "reinit_date": 1702017823,
+            "version": 1702017823
           },
           "id": {
             "@type": "pub.ed25519",
             "key": "VIFo/FD5o2fowvkK3gLYT2Ewdi4crw4h59xX5KWcvTI="
           },
-          "signature": "X7Vse9FvzBwnnui20KVQBQPkZ3PwjVKiiL1JLWVaNXs8GndIJBqe7JmkSDjH02XX2tYR6IYbt5SGvE2wCLhEDw==",
-          "version": 1643156719
+          "signature": "5xmXVQPJY/x2xtUwQn1U/4lcEjpUzmgmQEkrPBYPXGykaAaAMJ1qbjYJJoUOv+g19rZzD53AvgHWcPpBs3yJAg==",
+          "version": 1702017823
         },
         {
           "@type": "dht.node",
@@ -158,15 +158,15 @@
             ],
             "expire_at": 0,
             "priority": 0,
-            "reinit_date": 1643156724,
-            "version": 1643156724
+            "reinit_date": 1702017827,
+            "version": 1702017827
           },
           "id": {
             "@type": "pub.ed25519",
             "key": "z8rz4TTWY9ELYTMyNz3qOIBTSPsSFUyuUYolYvNTz4A="
           },
-          "signature": "T8lPC5+4pFzlAmF4Lkfu/UHrpnvf6dE+2HLNM0JlD4BwigaBi0lf4nbPdPwukPR3mPszRnkrcAae/w/oUSxOAg==",
-          "version": 1643156724
+          "signature": "K/ecPzYxL629/OOg9Ecn8x3m6/LfQqERVvRL+JdX16cS8urzlzBR+10rtKFyfiYLyPBO1r/TTTwp88kzufJ8DA==",
+          "version": 1702017827
         },
         {
           "@type": "dht.node",
@@ -181,15 +181,15 @@
             ],
             "expire_at": 0,
             "priority": 0,
-            "reinit_date": 1643156729,
-            "version": 1643156729
+            "reinit_date": 1702017831,
+            "version": 1702017831
           },
           "id": {
             "@type": "pub.ed25519",
             "key": "O/aboCIn0EJU1vTNKBfqoswIuGFvHQHanldXj6yc/cQ="
           },
-          "signature": "09NemxUzye2sbHzWzQo0xmtRI8XpaEFYDdHs3RYL8qVJJ8fW3vBlwzkax6v4NR8TRnvvjgPuAnr1vbwHa97lCg==",
-          "version": 1643156729
+          "signature": "ImyxxU/k7oeY+ADMyKfy4yRFowu9LXp/YaqgTkaPb9D5rphIcW6AoxoJOsTiMz1zJxx7QJRVjwInR9aHO/XgCw==",
+          "version": 1702017831
         },
         {
           "@type": "dht.node",
@@ -204,15 +204,15 @@
             ],
             "expire_at": 0,
             "priority": 0,
-            "reinit_date": 1643156734,
-            "version": 1643156734
+            "reinit_date": 1702017835,
+            "version": 1702017835
           },
           "id": {
             "@type": "pub.ed25519",
             "key": "WwDx6GvOsTuLNsRttdcnvyh7hJXyGDifCRsAjAB6lFc="
           },
-          "signature": "mrxhYu6tw6L/69AM7P1uZHbgxpvlXI0Yuven5OX+0rWAhwKESzIuHYDeEetN5Ph149P/y3O7JTq1ABivmiOVDA==",
-          "version": 1643156734
+          "signature": "NpGD6y3vYkRWRQjMSFzOG+Md/63jfIUDMW5yixDFXiuoOY2V3CaOgQfggwgAKF8mcT3Ttmu+GOIaypWb3755AQ==",
+          "version": 1702017835
         },
         {
           "@type": "dht.node",
@@ -227,15 +227,15 @@
             ],
             "expire_at": 0,
             "priority": 0,
-            "reinit_date": 1643156739,
-            "version": 1643156739
+            "reinit_date": 1702017838,
+            "version": 1702017838
           },
           "id": {
             "@type": "pub.ed25519",
             "key": "fWyptM8k+E4AtOz4VbmmPc+F9J9VYu4bUaHcfDB0kqQ="
           },
-          "signature": "1+6USLGcifmyi1kqbRObQTOeUcMiis4grymoAd4Za9WSH+zq/K1kodwKz/+X63zAnMQhQV+ZmkdoFLL3rJbnCg==",
-          "version": 1643156739
+          "signature": "z5mSQANCJqYpbCxN9R7VKTLixk90ApSGsBDNeasGxoYaBqafvmpZVvTsysp4al9s2ncZ3wKsDq4QO85QAAbhCA==",
+          "version": 1702017838
         },
         {
           "@type": "dht.node",
@@ -250,15 +250,15 @@
             ],
             "expire_at": 0,
             "priority": 0,
-            "reinit_date": 1643156744,
-            "version": 1643156744
+            "reinit_date": 1702017842,
+            "version": 1702017842
           },
           "id": {
             "@type": "pub.ed25519",
             "key": "KaE4ZQGFpxn5mROWpaskGQs2BEW+OS4MZIPIXZeeCc4="
           },
-          "signature": "BmvJm8XXMnzowrm4nOGTROL9xD2ZAiXkQhGPq212Q9uUIR934Fl1UNpWMJWStPRTgGJzQCqe6s1Ldl/rBcODCg==",
-          "version": 1643156744
+          "signature": "eECEy7BZjHE+IGqIdlmxtENN/udnU+SnlTF8d34pJl9c/BwI7BrNQt/IBvyItHWB0AeNq+HjVZYRtJF1DEJKBQ==",
+          "version": 1702017842
         },
         {
           "@type": "dht.node",
@@ -273,15 +273,15 @@
             ],
             "expire_at": 0,
             "priority": 0,
-            "reinit_date": 1643156749,
-            "version": 1643156749
+            "reinit_date": 1702017846,
+            "version": 1702017846
           },
           "id": {
             "@type": "pub.ed25519",
             "key": "dj8b6WnTRUPeB6FNuQU0efvwNmUAXMoX21i9G7xTxqU="
           },
-          "signature": "LGRH4SNTY37Hei31NMibeSrbEYZx3WKIraE+FT246n86hgvsJUWgyGoutOKl4blQ8a1uHfpbSmVARhqADvajDg==",
-          "version": 1643156749
+          "signature": "igTjFZqRi2EWnI2KbpEjAt5yWVEMcxdLFjXSxhG46YlktIgODbv1FomcvmaNZ1CkusnwMe7UeHL85BZ67tgXAg==",
+          "version": 1702017846
         },
         {
           "@type": "dht.node",
@@ -296,15 +296,15 @@
             ],
             "expire_at": 0,
             "priority": 0,
-            "reinit_date": 1643156754,
-            "version": 1643156754
+            "reinit_date": 1702017849,
+            "version": 1702017849
           },
           "id": {
             "@type": "pub.ed25519",
             "key": "HBtJ1JJ8Lmu40ghzwITK4wywXwggDqH9tBDT3ZCs4Lc="
           },
-          "signature": "jdBi1ag1Wz7XlqmhIeQ9GNOEd2XGcvwHl9EhUTg1tFzD/QY3mpJmWEG+wb7Y+2cuH75Qtxg+d2yE7idlTN0eDg==",
-          "version": 1643156754
+          "signature": "Dq0jWBwtQht+XKyyqDUaRDm0QWzBwrDX6dYnaZVv5rhqWzN/yy8L6u4/WUnC90xRsXZZHErjINJ2lzbZ7aotDg==",
+          "version": 1702017849
         },
         {
           "@type": "dht.node",
@@ -319,15 +319,15 @@
             ],
             "expire_at": 0,
             "priority": 0,
-            "reinit_date": 1643156759,
-            "version": 1643156759
+            "reinit_date": 1702017853,
+            "version": 1702017853
           },
           "id": {
             "@type": "pub.ed25519",
             "key": "ncK+BSvZu7bwWC3KQon8/20ynL1JQ0y7cAYqWkh+fR8="
           },
-          "signature": "w6PZ6Lq5p/z0R3bR5ylzm3i5QNl7aA9TGaFn/gV1I2c0YvHuGvtnQcUffsUUMpZbBXuqNjiAD+WjIs3UcpRcCg==",
-          "version": 1643156759
+          "signature": "ISvwe9l31KG0GgGWu7Sc+0hAJ5fSUChp0K/9TLfQhKzcAlgvm1boQh9nhgA7Uxl9H81extmgoEIex6Kl9v+eAA==",
+          "version": 1702017853
         },
         {
           "@type": "dht.node",
@@ -342,38 +342,15 @@
             ],
             "expire_at": 0,
             "priority": 0,
-            "reinit_date": 1643156764,
-            "version": 1643156764
+            "reinit_date": 1702017856,
+            "version": 1702017856
           },
           "id": {
             "@type": "pub.ed25519",
             "key": "AgBJOSmiFddy8vCnm1OuYfK3Hd2vgzB/ajolGQiBryY="
           },
-          "signature": "SkvwSRzn8MFTHdGG0jkhOBikO/T64taiKX7knsCdTYlxj3OKh8CgotcQj/gsu+dJbCXp/KHDROJVf+2bSj1eAQ==",
-          "version": 1643156764
-        },
-        {
-          "@type": "dht.node",
-          "addr_list": {
-            "@type": "adnl.addressList",
-            "addrs": [
-              {
-                "@type": "adnl.address.udp",
-                "ip": -642332571,
-                "port": 30303
-              }
-            ],
-            "expire_at": 0,
-            "priority": 0,
-            "reinit_date": 1643156770,
-            "version": 1643156770
-          },
-          "id": {
-            "@type": "pub.ed25519",
-            "key": "X1833CIMxIf5dGSvEK9f5yNkoPy0IvVOzvQ1DSrK+eA="
-          },
-          "signature": "Kgu42WQm9x/o2vwBoUhPXledlOwIs/cW/F96DuSZRQ1YNbrGWETJWOF2A5ZMBGhs/J9t7icDJeAh3niOYvnPBw==",
-          "version": 1643156770
+          "signature": "BLxz7EFQ8QM9bN5aMw7IMm8yHNlL6FI23G/PgFjScaQkjHuA85Moqu/fvK79dAABsCuhfqD0iwjv/Ey1l1BqBw==",
+          "version": 1702017856
         }
       ]
     }
