@@ -361,7 +361,7 @@
       "file_hash": "2Q2lg3IWbHJo9q2YXv1j2lwsmBtTuiT/djB66WEUd3c=",
       "root_hash": "zYHa4MI9eOfD61kD8qe9mIiZkdNqJoEqkWPKDynEcJM=",
       "seqno": 0,
-      "shard": -9223372036854776000,
+      "shard": -9223372036854775808,
       "workchain": -1
     }
   }
